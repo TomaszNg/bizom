@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 
-<html lang='en'>
+<html lang="en">
     <head>
-        <title></title>
+        <title>cms</title>
 
-        <meta charset='UTF-8'>
-        <meta name='viewport' content='width=device-width, initial-scale=1'>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
         {% block stylesheets %}
             {% stylesheets 
-                'bundles/core/css/*' 
-                filter='cssrewrite' %}
-                <link rel='stylesheet' href='{{ asset_url }}' />
+                'bundles/core/css/vendor/*.min.css' 
+                'bundles/core/scss/main.scss' 
+                filter='cssrewrite, scssphp' %}
+                <link type="text/css" rel="stylesheet" href="{{ asset_url }}" />
             {% endstylesheets %}
         {% endblock stylesheets %}
     </head>
@@ -27,9 +28,12 @@
         {% endblock footer %}
 
         {% block javascripts %}
-            {% javascripts 
-                'bundles/core/js/*' %}
-                <script src='{{ asset_url }}'></script>
+            {% javascripts
+                'bundles/core/js/vendor/jquery.min.js'
+                'bundles/core/js/vendor/jqueryui.min.js'
+                'bundles/core/js/main.js'
+                filter='jsqueeze' %}
+                <script type="text/javascript" src="{{ asset_url }}"></script>
             {% endjavascripts %}
         {% endblock javascripts %}
     </body>
