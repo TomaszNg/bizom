@@ -1,16 +1,16 @@
 <?php
 
 /**
- * CoreBundle class
+ * UserBundle class
  *
  * @author Tomasz Ngondo <tomasz.ngondo@outlook.fr>
  * @copyright 2017
  */
 
-namespace CoreBundle;
+namespace UserBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class CoreBundle extends Bundle
+class UserBundle extends Bundle
 {
 }
