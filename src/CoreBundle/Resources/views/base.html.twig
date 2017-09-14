@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+
+<html lang='en'>
+    <head>
+        <title></title>
+
+        <meta charset='UTF-8'>
+        <meta name='viewport' content='width=device-width, initial-scale=1'>
+
+        {% block stylesheets %}
+            {% stylesheets 
+                'bundles/core/css/*' 
+                filter='cssrewrite' %}
+                <link rel='stylesheet' href='{{ asset_url }}' />
+            {% endstylesheets %}
+        {% endblock stylesheets %}
+    </head>
+
+    <body>
+        {% block header %}
+        {% endblock header %}
+
+        {% block content %}
+        {% endblock content %}
+
+        {% block footer %}
+        {% endblock footer %}
+
+        {% block javascripts %}
+            {% javascripts 
+                'bundles/core/js/*' %}
+                <script src='{{ asset_url }}'></script>
+            {% endjavascripts %}
+        {% endblock javascripts %}
+    </body>
+</html>
