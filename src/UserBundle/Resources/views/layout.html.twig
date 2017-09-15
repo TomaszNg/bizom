@@ -1,31 +1,53 @@
 {% extends 'CoreBundle::base.html.twig' %}
 
-{% block header %}
-    <div>
-        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-            {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} |
-            <a href="{{ path('fos_user_security_logout') }}">
-                {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
-            </a>
-        {% else %}
-            <a href="{{ path('fos_user_security_login') }}">{{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a>
-        {% endif %}
-    </div>
-
-    {% if app.request.hasPreviousSession %}
-        {% for type, messages in app.session.flashBag.all %}
-            {% for message in messages %}
-                <div class="{{ type }}">
-                    {{ message|trans({}, 'FOSUserBundle') }}
-                </div>
-            {% endfor %}
-        {% endfor %}
-    {% endif %}
-{% endblock header %}
+{% block widgets %}
+    <div id="visitor_carousel" class="visit-background-3 h-100 w-100"></div>
+{% endblock widgets %}
 
 {% block content %}
-    <div>
+    <main class="container-fluid">
+        {% block header %}
+            <header class="row">
+                <nav class="navbar w-100">
+                    <ul class="nav">
+                        {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                            <span class="navbar-text">{{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} |</span> 
+                            <li class="nav-item"><a class="nav-link" href="{{ path('fos_user_security_logout') }}">{{ 'layout.logout'|trans({}, 'FOSUserBundle') }}</a></li>
+                        {% else %}
+                            {% if app.request.requestUri == '/' or  app.request.requestUri == '/register/' %}
+                                <li class="nav-item"><a class="nav-link" href="{{ path('fos_user_security_login') }}">{{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a></li>
+                            {% elseif app.request.requestUri == '/login' %}
+                                <li class="nav-item"><a class="nav-link" href="{{ path('fos_user_registration_register') }}">{{ 'layout.register'|trans({}, 'FOSUserBundle') }}</a></li>
+                            {% endif %}
+                        {% endif %}
+                    </ul>
+
+                    {% if app.request.hasPreviousSession %}
+                        {% for type, messages in app.session.flashBag.all %}
+                            {% for message in messages %}
+                                <div class="{{ type }}">
+                                    {{ message|trans({}, 'FOSUserBundle') }}
+                                </div>
+                            {% endfor %}
+                        {% endfor %}
+                    {% endif %}
+                </nav>
+            </header>
+        {% endblock header %}
+
         {% block fos_user_content %}
         {% endblock fos_user_content %}
-    </div>
+
+        {% block footer %}
+            <footer class="row">
+                <nav class="navbar w-100">
+                    <span class="navbar-text">Copyright © 2017 Tomasz Ngondo</span>
+                    <ul class="nav">
+                        <li class="nav-item"><a class="nav-link" href="">Documentation</a></li>
+                    </ul>
+                </nav>
+            </footer>
+        {% endblock footer %}
+    </main>
 {% endblock content %}
+

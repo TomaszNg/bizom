@@ -1,0 +1,55 @@
+{% extends 'UserBundle::layout.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets 
+        'bundles/user/scss/register.scss' 
+        filter='cssrewrite, scssphp' %}
+        <link type="text/css" rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+{% endblock stylesheets %}
+
+{% block fos_user_content %}
+    {% trans_default_domain 'FOSUserBundle' %}
+    
+    <section class="row">
+        {{ form_start(form, {'method': 'post', 'action': path('fos_user_registration_register'), 'attr': {'class': 'fos_user_registration_register col-sm-6 col-md-5 col-lg-4 col-xl-3 mx-auto'}}) }}
+            <div class="form-group">
+                {{ form_label(form.email) }}
+                {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.email) }}
+            </div>
+
+            <div class="form-group">
+                {{ form_label(form.username) }}
+                {{ form_widget(form.username, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.username) }}
+            </div>
+            
+            <div class="form-group">
+                {{ form_label(form.plainPassword.first) }}
+                {{ form_widget(form.plainPassword.first, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.plainPassword.first) }}
+            </div>
+            
+            <div class="form-group">  
+                {{ form_label(form.plainPassword.second) }}
+                {{ form_widget(form.plainPassword.second, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.plainPassword.second) }}
+            </div>
+            
+            <div class="form-group text-center">
+                <input class="btn btn-secondary" type="submit" value="{{ 'registration.submit'|trans }}" />
+            </div>
+        {{ form_end(form) }}
+    </section>
+{% endblock fos_user_content %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts 
+        'bundles/user/js/register.js'
+        filter='jsqueeze' %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock javascripts %}

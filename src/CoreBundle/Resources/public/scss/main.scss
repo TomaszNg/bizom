@@ -4,3 +4,83 @@
  * Author: Tomasz Ngondo <tomasz.ngondo@outlook.fr>
  * Copyright 2017
  */
+
+ @import 'mixins.scss';
+
+.btn {
+    cursor: pointer;
+}
+
+// Main tags
+html, body {
+    width: 100%;
+    height: 100%;
+}
+
+.error {
+    color: $fourth-color;
+}
+
+#visitor_carousel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+
+.visit-background-1 {
+    background-color: $first-color;
+    @include prefix((
+        transition: 2s
+    ), webkit moz o);
+}
+
+.visit-background-2 {
+    background-color: $second-color;
+    @include prefix((
+        transition: 2s
+    ), webkit moz o);
+}
+
+.visit-background-3 {
+    background-color: $third-color;
+    @include prefix((
+        transition: 2s
+    ), webkit moz o);
+}
+
+body.register, body.login {
+    main {
+        height: 100%;
+        display: grid;
+        
+        header {
+            nav {
+                ul {
+                    margin-left: auto;
+                }
+            }
+        }
+
+        section {
+            form {
+                height: fit-content;
+                position: relative;
+                top: 50%;
+                @include prefix((
+                    transform: translateY(-50%)
+                ), webkit moz o);
+
+                ul {
+                    padding: 0;
+
+                    li {
+                        color: $fourth-color;
+                        list-style-type: none;
+                        text-align: center;
+                    }
+                }
+            }
+        }
+    }    
+}

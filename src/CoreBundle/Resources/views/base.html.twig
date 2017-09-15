@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="fr">
     <head>
-        <title>cms</title>
+        <title>{{ app_name }}</title>
 
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
         {% block stylesheets %}
             {% stylesheets 
@@ -17,20 +17,29 @@
         {% endblock stylesheets %}
     </head>
 
-    <body>
-        {% block header %}
-        {% endblock header %}
+    {% if app.request.requestUri|trim('/') == '' and app.user is null %}
+        {% set page = 'register' %}
+    {% elseif app.request.requestUri|trim('/') == '' and app.user is not null %}
+        {% set page = 'home' %}
+    {% else %}
+        {% set page = app.request.requestUri|trim('/') %}
+    {% endif %}
+
+    <body class="{{ page }}">
+        {% block widgets %}
+        {% endblock widgets %}
 
         {% block content %}
-        {% endblock content %}
+            {% block header %}
+            {% endblock header %}
 
-        {% block footer %}
-        {% endblock footer %}
+            {% block footer %}
+            {% endblock footer %}
+        {% endblock content %}
 
         {% block javascripts %}
             {% javascripts
                 'bundles/core/js/vendor/jquery.min.js'
-                'bundles/core/js/vendor/jqueryui.min.js'
                 'bundles/core/js/main.js'
                 filter='jsqueeze' %}
                 <script type="text/javascript" src="{{ asset_url }}"></script>
