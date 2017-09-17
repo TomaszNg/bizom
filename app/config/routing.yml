@@ -1,10 +1,20 @@
-user:
-    resource: "@UserBundle/Resources/config/routing.yml"
+bzm_website:
+    resource: "@BZMWebsiteBundle/Controller/"
+    type:     annotation
     prefix:   /
 
-core:
-    resource: "@CoreBundle/Resources/config/routing.yml"
+bzm_admin:
+    resource: "@BZMAdminBundle/Controller/"
+    type:     annotation
     prefix:   /
+
+user:
+    resource: "@BZMUserBundle/Controller"
+    type:     annotation
+
+core:
+    resource: "@BZMCoreBundle/Controller"
+    type:     annotation
 
 fos_user:
     resource: "@FOSUserBundle/Resources/config/routing/all.xml"

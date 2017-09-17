@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+
+<html lang="fr">
+    <head>
+        <title>{{ app_name|capitalize }}</title>
+
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        {% block stylesheets %}
+            {% stylesheets 
+                'bundles/bzmcore/css/vendor/*.min.css' 
+                'bundles/bzmcore/scss/main.scss' 
+                filter='cssrewrite, scssphp' %}
+                <link type="text/css" rel="stylesheet" href="{{ asset_url }}" />
+            {% endstylesheets %}
+        {% endblock stylesheets %}
+    </head>
+
+    {% if page is not defined %}
+        {% set page = app.request.requestUri|trim('/') %}
+    {% endif %}
+
+    <body class="{{ page }} container-fluid">
+        {% block widgets %}
+        {% endblock widgets %}
+        
+        {% block header %}
+        {% endblock header %}
+
+        {% block content %}
+        {% endblock content %}
+        
+        {% block footer %}
+        {% endblock footer %}
+
+        {% block javascripts %}
+            {% javascripts
+                'bundles/bzmcore/js/vendor/jquery.min.js'
+                'bundles/bzmcore/js/main.js'
+                filter='jsqueeze' %}
+                <script type="text/javascript" src="{{ asset_url }}"></script>
+            {% endjavascripts %}
+        {% endblock javascripts %}
+    </body>
+</html>

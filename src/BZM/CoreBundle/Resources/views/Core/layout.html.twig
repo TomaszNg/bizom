@@ -1,0 +1,59 @@
+{% extends 'BZMCoreBundle::base.html.twig' %}
+
+{% block widgets %}
+    <div id="visit_bgd_fader" class="h-100 w-100"></div>
+    <div id="visit_bgd_image" class="h-100 w-100"></div>
+{% endblock widgets %}
+
+{% block header %}
+    <header class="row">
+        {% block headernav %}
+            <nav class="navbar w-100">
+                <ul class="nav">
+                    {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                        <p class="navbar-text">{{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} |</p> 
+                        <li class="nav-item"><a class="nav-link" href="{{ path('fos_user_security_logout') }}">{{ 'layout.logout'|trans({}, 'FOSUserBundle') }}</a></li>
+                    {% else %}
+                        {% if app.request.requestUri == '/' or  app.request.requestUri == '/register/' %}
+                            <li class="nav-item"><a class="nav-link" href="{{ path('fos_user_security_login') }}">{{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a></li>
+                        {% elseif app.request.requestUri == '/login' %}
+                            <li class="nav-item"><a class="nav-link" href="{{ path('fos_user_registration_register') }}">{{ 'layout.register'|trans({}, 'FOSUserBundle') }}</a></li>
+                        {% endif %}
+                    {% endif %}
+                </ul>
+
+                {% if app.request.hasPreviousSession %}
+                    {% for type, messages in app.session.flashBag.all %}
+                        {% for message in messages %}
+                            <div class="{{ type }}">
+                                {{ message|trans({}, 'FOSUserBundle') }}
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                {% endif %}
+            </nav>
+        {% endblock headernav %}
+
+        {% block banner %}
+            <figure class="mx-auto">
+                <div class="app-logo mx-auto"></div>
+                <div>
+                    <h1>{{ app_name |replace({'i': '!'}) |capitalize }}</h1>
+                    <h2>Simple et puissant</h2>
+                </div>
+            </figure>
+        {% endblock banner %}
+    </header>
+{% endblock header %}
+
+{% block content %}
+{% endblock content %}
+
+{% block footer %}
+    <footer class="row">
+        <div class="navbar w-100">
+            <p>Copyright © 2017 Tomasz Ngondo</p>
+            <a href="https://github.com/TomaszNg/bizom"><i class="fa fa-github" aria-hidden="true"></i></a>
+        </div>
+    </footer>
+{% endblock footer %}

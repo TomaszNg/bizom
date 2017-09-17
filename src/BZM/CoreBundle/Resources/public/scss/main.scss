@@ -1,0 +1,153 @@
+/**
+ * Main CSS file
+ *
+ * Author: Tomasz Ngondo <tomasz.ngondo@outlook.fr>
+ * Copyright 2017
+ */
+
+@import 'mixins.scss';
+
+// Main tags
+html, body {
+    width: 100%;
+    height: 100%;
+}
+
+p {
+    font-family: textFont;
+    margin: 0;
+}
+
+label {
+    font-family: textFont;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+// Main classes
+.warning-color {
+    color: $fourth-color;
+}
+
+// Main widgets
+#visit_bgd_fader, #visit_bgd_image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+
+// Custom classes
+.btn {
+    font-family: textFont;
+    cursor: pointer;
+}
+
+.btn-secondary {
+    background-color: $fourth-color;
+    border-color: $fourth-color;
+}
+
+#visit_bgd_image {
+    opacity: 0.3;
+    background-image: url('../images/visitor_bgd_image.jpg');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+body.cover,
+body.install,
+body.login,
+body.register {
+    header {
+        height: 50%;
+
+        nav {
+            position: absolute;
+
+            ul {
+                width: 100%;
+
+                li {
+                    margin-left: auto;
+                }
+            }
+        }
+
+        figure {
+            position: relative;
+            margin: 0;
+            text-align: center;
+            font-family: titleFont;
+
+            .app-logo {
+                width: 50%;
+                height: 50%;
+                position: relative;
+                top: 25px;
+                z-index: 1;
+                opacity: 0.8;
+                background-image: url('../images/app_logo.svg');
+                background-repeat: no-repeat;
+                background-position: center;
+                background-size: cover;
+            }
+
+            div:nth-child(2) {
+                h1 {
+                    margin: 0;
+                    font-size: 8em;
+                    line-height: 0.8;
+                }
+    
+                h2 {
+                    margin: 0;
+                    font-size: 3em;
+                }
+            }
+        }
+    }
+
+    main {
+        @include calc('height', '50% - 64px');
+        section {
+            h5 {
+                font-family: titleFont;
+                font-size: 2em;
+            }
+
+            div {
+                position: relative;
+                top: 8%;
+
+                h4 {
+                    font-family: titleFont;
+                    font-size: 2em;
+                }
+
+                p {
+                    margin: 25px;
+                }
+            }
+
+            form {
+                textarea {
+                    max-height: 140px;
+                }
+            }
+        }
+    }
+
+    footer {
+        div {
+            a {
+                display: flex;
+                font-size: 48px;
+                color: black;
+            }
+        }
+    }
+}

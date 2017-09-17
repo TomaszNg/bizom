@@ -1,0 +1,41 @@
+/**
+ * Mixins file
+ *
+ * Author: Tomasz Ngondo <tomasz.ngondo@outlook.fr>
+ * Copyright 2017
+ */
+
+ // Mixins
+ @mixin prefix($declarations, $prefixes: ()) {
+	@each $property, $value in $declarations {
+    	@each $prefix in $prefixes {
+      		#{'-' + $prefix + '-' + $property}: $value;
+    	}
+    	#{$property}: $value;
+  	}
+}
+
+@mixin calc($property, $expression) {
+	#{$property}: -webkit-calc(#{$expression});
+  	#{$property}: -moz-calc(#{$expression});
+  	#{$property}: -ms-calc(#{$expression});
+  	#{$property}: -o-calc(#{$expression});
+  	#{$property}: calc(#{$expression});
+}
+
+// Vars
+$first-color: #a9a9a9;
+$second-color: #ffffff;
+$third-color: #efefef;
+$fourth-color: #618789;
+
+// Fonts
+@font-face {
+	font-family: titleFont;
+	src: url('../../bzmcore/css/fonts/Sniglet-Regular.ttf');
+}
+
+@font-face {
+	font-family: textFont;
+	src: url('../../bzmcore/css/fonts/TitilliumWeb-Regular.ttf');
+}
