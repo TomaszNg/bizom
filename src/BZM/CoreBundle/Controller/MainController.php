@@ -14,8 +14,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Serializer\Encoder\YamlEncoder;
 use BZM\CoreBundle\Service\FormGenerator;
 use BZM\CoreBundle\Entity\Project;
+
 class MainController extends Controller
 {
     /**
@@ -44,17 +46,28 @@ class MainController extends Controller
      * @Route("/install", name="bizom_core_install")
      * @Method({"GET", "POST"})
      */
-    public function installAction(Request $request, FormGenerator $formGenerator, EntityManagerInterface $em) { 
+    public function installAction(Request $request, EntityManagerInterface $em, FormGenerator $formGenerator) { 
         $form = $formGenerator->getInstallForm();
         $project = $em->getRepository(Project::class);
+        $yamlEncoder = new YamlEncoder();
+        $parametersFile = $this->get('kernel')->getRootDir() . '\config\parameters.yml';
+        $parametersYml = $yamlEncoder->decode(file_get_contents($parametersFile), 1);
+        
         $form->handleRequest($request);
         
         if ($form->isSubmitted() && $form->isValid()) { 
-            $data = $form->getData();  
-
+            $data = $form->getData();  // todo: serialize form data in array (find function) + 
+            $dataArray = ['parameters'=> array(
+                'project_name' => $data->getProjectName(),
+                'company_name' => $data->getCompanyName(),
+                'company_adress' => $data->getCompanyAdress()
+            )];
+            
+            $parametersYml['parameters'] = array_merge($parametersYml['parameters'], $dataArray['parameters']);
             // Add project data to parameters
-            if (!$this->container->hasParameter('project_name')) {
-                $this->setParameters($data);
+            if (!mb_stripos($parametersFile ,$data->getProjectName())) {
+                $parameters = $yamlEncoder->encode($parametersYml, 'yaml', ['yaml_inline' => 2, 'yaml_indent' => 0]);
+                file_put_contents($parametersFile, $parameters);
             }
             
             // Persist project data and go to registration, if error go to login
@@ -67,16 +80,5 @@ class MainController extends Controller
         }
 
         return $this->render('BZMCoreBundle:Core:install.html.twig', array('form' => $form->createView()));
-    }
-
-    // Appends new parameters in parameters file
-    public function setParameters($data) {
-        $parametersFile = $this->get('kernel')->getRootDir() . '\config\parameters.yml';
-        $projectParameters = "\n\n    # Project parameters\n";
-        $projectParameters .= "\n    project_name: " . $data->getProjectName();
-        $projectParameters .= "\n    company_name: " . $data->getCompanyName();
-        $projectParameters .= "\n    company_adress: " . $data->getCompanyAdress();
-        
-        file_put_contents($parametersFile, $projectParameters, FILE_APPEND | LOCK_EX);
     }
 }
