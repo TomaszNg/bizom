@@ -72,7 +72,7 @@ class MainController extends Controller
         if (!array_search($project[0]->getProjectName(), $parameters['parameters'])) {
             return $this->render('BZMCoreBundle:Core:install.html.twig', array('form' => $form->createView()));
         } else {
-            throw $this->createNotFoundException('The product does not exist');
+            throw $this->createNotFoundException();
         }
     }
 }

@@ -24,7 +24,7 @@ a:hover {
 
 // Main classes
 .warning-color {
-    color: $fourth-color;
+    color: $fifth-color;
 }
 
 // Main widgets
@@ -148,6 +148,13 @@ body.error-page {
     
                     textarea {
                         max-height: 140px;
+                    }
+
+                    ul {
+                        list-style-type: none;
+                        text-align: center;
+                        padding: 0;
+                        color: $fifth-color;
                     }
                 }
             }
