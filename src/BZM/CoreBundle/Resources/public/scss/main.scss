@@ -8,17 +8,13 @@
 @import 'mixins.scss';
 
 // Main tags
-html, body {
+html {
     width: 100%;
     height: 100%;
 }
 
-p {
-    font-family: textFont;
-    margin: 0;
-}
-
-label {
+body {
+    height: 100%;
     font-family: textFont;
 }
 
@@ -61,12 +57,17 @@ a:hover {
 body.cover,
 body.install,
 body.login,
-body.register {
+body.register,
+body.error-page {
     header {
-        height: 50%;
+        width: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
 
         nav {
-            position: absolute;
+            height: 56px;
+            position: relative;
 
             ul {
                 width: 100%;
@@ -76,73 +77,95 @@ body.register {
                 }
             }
         }
+    }
 
-        figure {
-            position: relative;
-            margin: 0;
-            text-align: center;
-            font-family: titleFont;
+    figure {
+        @include calc(height, '100% - 56px');
+        position: relative;
+        margin: 0;
+        text-align: center;
+        font-family: titleFont;
 
-            .app-logo {
-                width: 50%;
-                height: 50%;
-                position: relative;
-                top: 25px;
-                z-index: 1;
-                opacity: 0.8;
-                background-image: url('../images/app_logo.svg');
-                background-repeat: no-repeat;
-                background-position: center;
-                background-size: cover;
-            }
+        .app-logo {
+            width: 150px;
+            height: 150px;
+            display: block;
+            z-index: 1;
+            opacity: 0.8;
+            background-image: url('../images/app_logo.svg');
+            background-repeat: no-repeat;
+            background-position-y: -33px;
+            background-size: cover;
+        }
 
-            div:nth-child(2) {
-                h1 {
-                    margin: 0;
-                    font-size: 8em;
-                    line-height: 0.8;
-                }
-    
-                h2 {
-                    margin: 0;
-                    font-size: 3em;
-                }
+        div:nth-child(2) {
+            @include calc(height, '100% - 150px');
+            user-select: none;
+            cursor: context-menu;
+
+            h1 {
+                margin: 0;
+                font-size: 8em;
+                line-height: 0.8;
             }
         }
     }
 
     main {
-        @include calc('height', '50% - 64px');
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        @include prefix((
+            transform: translate(-50%, -50%)
+        ), webkit moz ms o);
+
         section {
+            margin-top: 50px;
+
             h5 {
                 font-family: titleFont;
                 font-size: 2em;
+                margin-bottom: 30px;
+                @include no-select();
             }
 
-            div {
-                position: relative;
-                top: 8%;
+            h4 {
+                font-family: titleFont;
+                font-size: 2em;
+                @include no-select();
+            }
 
-                h4 {
-                    font-family: titleFont;
-                    font-size: 2em;
-                }
-
-                p {
-                    margin: 25px;
-                }
+            p {
+                margin: 25px;
+                @include no-select();
             }
 
             form {
-                textarea {
-                    max-height: 140px;
+                div {
+                    label {
+                        @include no-select();
+                    }
+    
+                    textarea {
+                        max-height: 140px;
+                    }
                 }
             }
         }
     }
-
+    
     footer {
+        width: 100%;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+
         div {
+            p {
+                margin: 0;
+                @include no-select();
+            }
+
             a {
                 display: flex;
                 font-size: 48px;

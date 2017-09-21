@@ -2,10 +2,13 @@
 
 <html lang="fr">
     <head>
-        <title>{{ app_name|capitalize }}</title>
-
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        {% block head %}
+            <title>{{ app_name|capitalize }}</title>
+            <link rel="icon" type="image/svg" href="bundles/bzmcore/images/app_logo.svg" />    
+        {% endblock head %}
 
         {% block stylesheets %}
             {% stylesheets 
@@ -21,6 +24,10 @@
         {% set page = app.request.requestUri|trim('/') %}
     {% endif %}
 
+    {% if status_code is defined %}
+        {% set page = "error-page" %}
+    {% endif %}
+    
     <body class="{{ page }} container-fluid">
         {% block widgets %}
         {% endblock widgets %}
@@ -30,7 +37,7 @@
 
         {% block content %}
         {% endblock content %}
-        
+
         {% block footer %}
         {% endblock footer %}
 

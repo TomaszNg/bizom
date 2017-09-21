@@ -6,54 +6,51 @@
 {% endblock widgets %}
 
 {% block header %}
-    <header class="row">
-        {% block headernav %}
-            <nav class="navbar w-100">
-                <ul class="nav">
-                    {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-                        <p class="navbar-text">{{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} |</p> 
-                        <li class="nav-item"><a class="nav-link" href="{{ path('fos_user_security_logout') }}">{{ 'layout.logout'|trans({}, 'FOSUserBundle') }}</a></li>
-                    {% else %}
-                        {% if app.request.requestUri == '/' or  app.request.requestUri == '/register/' %}
-                            <li class="nav-item"><a class="nav-link" href="{{ path('fos_user_security_login') }}">{{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a></li>
-                        {% elseif app.request.requestUri == '/login' %}
-                            <li class="nav-item"><a class="nav-link" href="{{ path('fos_user_registration_register') }}">{{ 'layout.register'|trans({}, 'FOSUserBundle') }}</a></li>
-                        {% endif %}
+    <header>
+        <nav class="navbar w-100">
+            <ul class="nav">
+                {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                    <p class="navbar-text">{{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} |</p> 
+                    <li class="nav-item"><a class="nav-link" href="{{ path('fos_user_security_logout') }}">{{ 'layout.logout'|trans({}, 'FOSUserBundle') }}</a></li>
+                {% else %}
+                    {% if app.request.requestUri == '/' or  app.request.requestUri == '/register/' %}
+                        <li class="nav-item"><a class="nav-link" href="{{ path('fos_user_security_login') }}">{{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a></li>
+                    {% elseif app.request.requestUri == '/login' %}
+                        <li class="nav-item"><a class="nav-link" href="{{ path('fos_user_registration_register') }}">{{ 'layout.register'|trans({}, 'FOSUserBundle') }}</a></li>
                     {% endif %}
-                </ul>
-
-                {% if app.request.hasPreviousSession %}
-                    {% for type, messages in app.session.flashBag.all %}
-                        {% for message in messages %}
-                            <div class="{{ type }}">
-                                {{ message|trans({}, 'FOSUserBundle') }}
-                            </div>
-                        {% endfor %}
-                    {% endfor %}
                 {% endif %}
-            </nav>
-        {% endblock headernav %}
+            </ul>
 
-        {% block banner %}
-            <figure class="mx-auto">
-                <div class="app-logo mx-auto"></div>
-                <div>
-                    <h1>{{ app_name |replace({'i': '!'}) |capitalize }}</h1>
-                    <h2>Simple et puissant</h2>
-                </div>
-            </figure>
-        {% endblock banner %}
+            {% if app.request.hasPreviousSession %}
+                {% for type, messages in app.session.flashBag.all %}
+                    {% for message in messages %}
+                        <div class="{{ type }}">
+                            {{ message|trans({}, 'FOSUserBundle') }}
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+            {% endif %}
+        </nav>
     </header>
 {% endblock header %}
 
 {% block content %}
+    {% block banner %}
+        <figure>
+            <a href="{{ path('bizom_core_homepage') }}" class="app-logo mx-auto"></a>
+            <div>
+                <h1>{{ app_name |replace({'i': '!'}) |capitalize }}</h1>
+            </div>
+        </figure>
+    {% endblock banner %}
 {% endblock content %}
 
 {% block footer %}
-    <footer class="row">
+    <footer>
         <div class="navbar w-100">
             <p>Copyright © 2017 Tomasz Ngondo</p>
             <a href="https://github.com/TomaszNg/bizom"><i class="fa fa-github" aria-hidden="true"></i></a>
         </div>
     </footer>
 {% endblock footer %}
+

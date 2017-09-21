@@ -3,8 +3,12 @@
 {% block fos_user_content %}
     {% trans_default_domain 'FOSUserBundle' %}
 
-    <main class="row">
-        <section class="col-sm-6 col-md-5 col-lg-4 col-xl-3 mx-auto">
+    <main>
+        {% block banner %}
+            {{ parent() }}
+        {% endblock banner %}
+        
+        <section>
             <h5 class="text-center">Connectez vous !</h5>
             <form action="{{ path("fos_user_security_check") }}" method="post">
                 {% if csrf_token %}

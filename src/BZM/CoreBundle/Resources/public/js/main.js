@@ -6,7 +6,7 @@
  */
 
 $(document).ready(function() {
-    animBgdFadeAuto($('#visit_bgd_fader'), ['#a9a9a9', '#ffffff', '#efefef']);
+    animBgdFadeAuto($('#visit_bgd_fader'), ['rgb(130, 130, 130)', 'rgb(255, 255, 255)', 'rgb(200, 200, 200)']);
 });
 
 // Changes background colors automatically with fade effect

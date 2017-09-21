@@ -1,0 +1,22 @@
+{% extends 'TwigBundle::layout.html.twig' %}
+
+{% block content %}
+    <main>
+        {% block banner %}
+            {{ parent() }}
+        {% endblock banner %}
+
+        <section class="text-center">
+            <h4>Page non trouvée</h4>
+        
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                {# ... #}
+            {% endif %}
+
+            <p>
+                La page que vous avez demandé n'existe pas.
+            </p>
+            <a class="btn btn-secondary" href="{{ path('bizom_core_homepage') }}">Retour accueil</a>
+        </section>
+    </main>
+{% endblock content %}

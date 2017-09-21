@@ -1,19 +1,14 @@
 {% extends 'BZMUserBundle::layout.html.twig' %}
 
-{% block stylesheets %}
-    {{ parent() }}
-    {% stylesheets 
-        'bundles/bzmuser/scss/register.scss' 
-        filter='cssrewrite, scssphp' %}
-        <link type="text/css" rel="stylesheet" href="{{ asset_url }}" />
-    {% endstylesheets %}
-{% endblock stylesheets %}
-
 {% block fos_user_content %}
     {% trans_default_domain 'FOSUserBundle' %}
     
-    <main class="row">
-        <section class="col-sm-6 col-md-5 col-lg-4 col-xl-3 mx-auto">
+    <main>
+        {% block banner %}
+            {{ parent() }}
+        {% endblock banner %}
+
+        <section>
             <h5 class="text-center">Enregistrez vous !</h5>
             {{ form_start(form, {'method': 'post', 'action': path('fos_user_registration_register'), 'attr': {'class': 'fos_user_registration_register'}}) }}
                 <div class="form-group">
@@ -47,12 +42,3 @@
         </section>
     </main>
 {% endblock fos_user_content %}
-
-{% block javascripts %}
-    {{ parent() }}
-    {% javascripts 
-        'bundles/bzmuser/js/register.js'
-        filter='jsqueeze' %}
-        <script type="text/javascript" src="{{ asset_url }}"></script>
-    {% endjavascripts %}
-{% endblock javascripts %}

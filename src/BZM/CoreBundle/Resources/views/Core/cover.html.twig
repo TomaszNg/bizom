@@ -1,19 +1,18 @@
 {% extends 'BZMCoreBundle:Core:layout.html.twig' %}
 
 {% block header %}
-    {{ parent() }}
-    {% block headernav %}
-    {% endblock headernav %}
 {% endblock header %}
 
 {% block content %}
-    <main class="row">
-        <section class="mx-auto text-center">
-            <div>
-                <h4>Bienvenue !</h4>
-                <p>C'est votre première installation,<br>cliquez sur le bouton ci-dessous pour continuer.</p>
-                <a class="btn btn-secondary" href="{{ path('bizom_core_install') }}">Installation</a>
-            </div>
+    <main>
+        {% block banner %}
+            {{ parent() }}
+        {% endblock banner %}
+
+        <section class="text-center">
+            <h4>Bienvenue !</h4>
+            <p>C'est votre première installation,<br>cliquez sur le bouton ci-dessous pour continuer.</p>
+            <a class="btn btn-secondary" href="{{ path('bizom_core_install') }}">Installation</a>
         </section>
     </main>
 {% endblock content %}

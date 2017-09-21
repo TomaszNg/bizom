@@ -23,6 +23,13 @@
   	#{$property}: calc(#{$expression});
 }
 
+@mixin no-select() {
+	@include prefix((
+		user-select: none
+	), webkit moz ms o);
+    cursor: context-menu;
+}
+
 // Vars
 $first-color: #a9a9a9;
 $second-color: #ffffff;

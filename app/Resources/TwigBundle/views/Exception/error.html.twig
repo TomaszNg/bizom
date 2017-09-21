@@ -1,0 +1,17 @@
+{% extends 'TwigBundle::layout.html.twig' %}
+
+{% block content %}
+    <main>
+        {% block banner %}
+            {{ parent() }}
+        {% endblock banner %}
+
+        <section class="text-center">
+            <h4>Oups! Une erreur est survenue</h4>
+            <p>
+                Il y a un problème, La page ne peut pas etre affichée.<br>
+                Excusez nous pour la gène occasionée.
+            </p>
+        </section>
+    </main>
+{% endblock content %}

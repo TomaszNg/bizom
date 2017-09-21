@@ -1,12 +1,5 @@
 <?php
 
-/**
- * Project entity
- *
- * @author Tomasz Ngondo <tomasz.ngondo@outlook.fr>
- * @copyright 2017
- */
-
 namespace BZM\CoreBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -31,21 +24,21 @@ class Project
     /**
      * @var string
      *
-     * @ORM\Column(name="project_name", type="string", length=255, unique=true)
+     * @ORM\Column(name="project_name", type="string", length=255)
      */
     private $projectName;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="company_name", type="string", length=255, unique=true)
+     * @ORM\Column(name="company_name", type="string", length=255)
      */
     private $companyName;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="company_adress", type="string", length=255, unique=true)
+     * @ORM\Column(name="company_adress", type="string", length=255)
      */
     private $companyAdress;
 
