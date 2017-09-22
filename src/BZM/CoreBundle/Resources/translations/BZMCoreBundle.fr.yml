@@ -1,0 +1,10 @@
+# Installation messages
+install:
+    title: Paramétrage du projet
+
+form:
+    project_name: Nom du projet
+    company_name: Nom de la société
+    company_adress: Adresse de la société
+    btn:
+        install: Installer

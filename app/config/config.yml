@@ -11,10 +11,14 @@ imports:
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: fr
+    app_name: bizom
 
 framework:
     #esi: ~
-    translator: { fallbacks: ['%locale%'] }
+    translator: 
+        paths:
+            - '%kernel.project_dir%/src/BZM/UserBundle/resources/translations'
+            - '%kernel.project_dir%/src/BZM/CoreBundle/resources/translations'
     # translator: ~
     secret: '%secret%'
     router:

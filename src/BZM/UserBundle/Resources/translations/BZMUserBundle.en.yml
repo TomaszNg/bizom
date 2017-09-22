@@ -1,0 +1,7 @@
+# Login messages
+login:
+    title: Log in to your account
+
+# Registration messages
+registration:
+    title: Create a new account

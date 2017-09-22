@@ -1,0 +1,10 @@
+# Installation messages
+install:
+    title: Setting up project
+
+form:
+    project_name: Project name
+    company_name: Company name
+    company_adress: Company adress
+    btn:
+        install: Install

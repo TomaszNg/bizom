@@ -9,7 +9,7 @@
         {% endblock banner %}
 
         <section>
-            <h5 class="text-center">Connectez vous !</h5>
+            <h5 class="text-center">{{ 'login.title'|trans({}, 'BZMUserBundle') }}</h5>
             <form action="{{ path('fos_user_security_check') }}" method="post">
                 {% if csrf_token %}
                     <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
@@ -18,7 +18,7 @@
                 {% if error %}
                     <div class="form-group text-center warning-color">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
                 {% endif %}
-
+                
                 <div class="form-group">
                     <label for="username">{{ 'security.login.username'|trans }}</label>
                     <input class="form-control" type="text" id="username" name="_username" value="{{ last_username }}" required="required" />

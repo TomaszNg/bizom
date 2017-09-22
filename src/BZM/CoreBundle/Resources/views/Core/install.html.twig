@@ -4,13 +4,15 @@
 {% endblock header %}
 
 {% block content %}
+    {% trans_default_domain 'BZMCoreBundle' %}
+
     <main>
         {% block banner %}
             {{ parent() }}
         {% endblock banner %}
 
         <section>
-            <h5 class="text-center">Installation</h5>
+            <h5 class="text-center">{{ 'install.title'|trans }}</h5>
             {{ form_start(form, {'method': 'post', 'action': path('bizom_core_install')}) }}
                 <div class="form-group">
                     {{ form_label(form.project_name) }}

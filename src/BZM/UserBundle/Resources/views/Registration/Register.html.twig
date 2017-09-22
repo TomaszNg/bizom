@@ -9,7 +9,7 @@
         {% endblock banner %}
 
         <section>
-            <h5 class="text-center">Enregistrez vous !</h5>
+            <h5 class="text-center">{{ 'registration.title'|trans({}, 'BZMUserBundle') }}</h5>
             {{ form_start(form, {'method': 'post', 'action': path('fos_user_registration_register'), 'attr': {'class': 'fos_user_registration_register'}}) }}
                 <div class="form-group">
                     {{ form_label(form.email) }}

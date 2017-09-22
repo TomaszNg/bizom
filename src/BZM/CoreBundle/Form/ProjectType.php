@@ -23,10 +23,10 @@ class ProjectType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('project_name', TextType::class, array('label' => 'Nom du projet'))
-            ->add('company_name', TextType::class, array('label' => 'Nom de la société'))
-            ->add('company_adress', TextareaType::class, array('label' => 'Adresse de la société'))
-            ->add('install', SubmitType::class, array('label' => 'Installer'))
+            ->add('project_name', TextType::class, array('label' => 'form.project_name', 'translation_domain' => 'BZMCoreBundle'))
+            ->add('company_name', TextType::class, array('label' => 'form.company_name', 'translation_domain' => 'BZMCoreBundle'))
+            ->add('company_adress', TextareaType::class, array('label' => 'form.company_adress', 'translation_domain' => 'BZMCoreBundle'))
+            ->add('install', SubmitType::class, array('label' => 'form.btn.install', 'translation_domain' => 'BZMCoreBundle'))
         ;
     }
 

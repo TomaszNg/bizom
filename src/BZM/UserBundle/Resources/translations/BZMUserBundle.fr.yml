@@ -1,0 +1,7 @@
+# Login messages
+login:
+    title: Connectez vous à votre compte
+
+# Registration messages
+registration:
+    title: Créer un nouveau compte

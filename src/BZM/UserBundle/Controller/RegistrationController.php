@@ -74,7 +74,7 @@
         }
 
         return $this->render('@FOSUser/Registration/register.html.twig', array(
-            'form' => $form->createView(),
+            'form' => $form->createView()
         ));
     }
 }

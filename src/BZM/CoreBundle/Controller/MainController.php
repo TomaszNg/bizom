@@ -55,6 +55,7 @@ class MainController extends Controller
         $parameters  = $pm->decodeParameters();
         $form->handleRequest($request);
         
+
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
             $pm->saveParameters($parameters, $data);
@@ -70,7 +71,9 @@ class MainController extends Controller
         } 
 
         if (!array_search($project[0]->getProjectName(), $parameters['parameters'])) {
-            return $this->render('BZMCoreBundle:Core:install.html.twig', array('form' => $form->createView()));
+            return $this->render('BZMCoreBundle:Core:install.html.twig', array(
+                'form'       => $form->createView()
+            ));
         } else {
             throw $this->createNotFoundException();
         }

@@ -99,9 +99,7 @@ body.error-page {
         }
 
         div:nth-child(2) {
-            @include calc(height, '100% - 150px');
-            user-select: none;
-            cursor: context-menu;
+            @include no-select();
 
             h1 {
                 margin: 0;
