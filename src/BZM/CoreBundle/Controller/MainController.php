@@ -13,9 +13,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Doctrine\ORM\EntityManagerInterface;
 use BZM\CoreBundle\Form\ProjectType;
-use BZM\CoreBundle\Entity\Project;
 use BZM\CoreBundle\Service\ParametersManager;
 
 class MainController extends Controller
@@ -26,14 +24,16 @@ class MainController extends Controller
      * @Route("/", name="bizom_core_homepage")
      * @Method("GET")
      */
-    public function homeAction(EntityManagerInterface $em, ParametersManager $pm) {
+    public function homeAction(Request $request, ParametersManager $pm) {
         $authChecker = $this->get('security.authorization_checker');
-            
+        $parameters  = $pm->decodeParameters();
+        
         if ($authChecker->isGranted('ROLE_USER') || $authChecker->isGranted('ROLE_ADMIN')) {
-            $project    = $em->getRepository(Project::class)->findAll();
-            $parameters = $pm->decodeParameters();
-            
-            if ($project == null || ($project && !array_search($project[0]->getProjectName(), $parameters['parameters']))) {
+            if (!array_key_exists('project_name', $parameters['parameters'])) {
+                if (!$this->get('session')->get('installation') == 'Done') {
+                    $this->get('session')->set('installation', 'Setting');
+                }
+
                 return $this->redirectToRoute('bizom_core_install');
             } else {
                 return $this->redirectToRoute('bizom_website_home');
@@ -47,32 +47,25 @@ class MainController extends Controller
      * Installs project parameters
      *
      * @Route("/install", name="bizom_core_install")
+     * @Route("/{_locale}/install", requirements={"_locale" = "fr|en"})
      * @Method({"GET", "POST"})
      */
-    public function installAction(Request $request, EntityManagerInterface $em, ParametersManager $pm) {
-        $form        = $this->createForm(ProjectType::class);
-        $project     = $em->getRepository(Project::class)->findAll();
-        $parameters  = $pm->decodeParameters();
-        $form->handleRequest($request);
-        
+    public function installAction(Request $request, ParametersManager $pm) {
+        if ($this->get('session')->get('installation') == 'Setting') {
+            $form = $this->createForm(ProjectType::class);
+            $form->handleRequest($request);
+    
+            if ($form->isSubmitted() && $form->isValid()) {
+                $parameters = $pm->decodeParameters();
+                $data = $form->getData();
+                $pm->saveParameters($parameters, $data);
+                $this->get('session')->set('installation', 'Done');
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
-            $pm->saveParameters($parameters, $data);
-
-            if ($project) {
-                $em->remove($project[0]);
+                return $this->redirectToRoute('bizom_core_homepage');
             } 
-            
-            $em->persist($data);
-            $em->flush();
 
-            return $this->redirectToRoute('bizom_core_homepage');
-        } 
-
-        if (!array_search($project[0]->getProjectName(), $parameters['parameters'])) {
             return $this->render('BZMCoreBundle:Core:install.html.twig', array(
-                'form'       => $form->createView()
+                'form' => $form->createView()
             ));
         } else {
             throw $this->createNotFoundException();

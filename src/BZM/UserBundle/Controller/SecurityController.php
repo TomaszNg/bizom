@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Registration controller
+ * Security controller
  *
  * @author Tomasz Ngondo <tomasz.ngondo@outlook.fr>
  * @copyright 2017
@@ -12,10 +12,17 @@
  use Symfony\Component\Security\Core\Exception\AuthenticationException;
  use Symfony\Component\HttpFoundation\Request;
  use Symfony\Component\Security\Core\Security;
+ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
  use FOS\UserBundle\Controller\SecurityController as BaseController;
 
  class SecurityController extends BaseController
  {
+     /**
+      * Log in user
+      *
+      * @Route("/login")
+      * @Route("/{_locale}/login", requirements={"_locale" = "fr|en"})
+      */
     public function loginAction(Request $request) {
         $authChecker = $this->get('security.authorization_checker');
 

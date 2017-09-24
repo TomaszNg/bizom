@@ -33,6 +33,9 @@ services:
     BZM\CoreBundle\Service\ParametersManager:
         arguments: ['%kernel.root_dir%']
     
+    BZM\CoreBundle\EventSubscriber\LocaleSubscriber:
+        arguments: ['%kernel.default_locale%']
+
     bzm_user.form_success:
         class: BZM\UserBundle\EventListener\FormSuccessListener
         arguments: ['@router']

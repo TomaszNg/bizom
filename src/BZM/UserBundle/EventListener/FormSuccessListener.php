@@ -1,7 +1,7 @@
 <?php
 
 /**
- * form success listener
+ * Form success listener
  *
  * @author Tomasz Ngondo <tomasz.ngondo@outlook.fr>
  * @copyright 2017
@@ -41,8 +41,8 @@
  
      public function onFormSuccess(FormEvent $event)
      {
-         $url = $this->router->generate('bizom_core_homepage');
- 
-         $event->setResponse(new RedirectResponse($url));
+        $url = $this->router->generate('bizom_core_homepage');
+        
+        $event->setResponse(new RedirectResponse($url));
      }
  }

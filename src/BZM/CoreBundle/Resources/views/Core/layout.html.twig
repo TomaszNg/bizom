@@ -9,27 +9,50 @@
     <header>
         <nav class="navbar w-100">
             <ul class="nav">
+                <div>
+                    {% if app.session.get('_locale') == null %}
+                        {{ app.session.set('_locale', 'en') }}
+                    {% endif %}
+
+                    {% if app.session.get('_locale') not in app.request.requestUri %}
+                        {% if app.session.get('_locale') == 'en' %}
+                            <li class="nav-item"><a class="nav-link" href="{{ '/fr/' ~ app.request.requestUri|trim('/') }}">FR</a></li>
+                        {% elseif app.session.get('_locale') == 'fr' %}
+                            <li class="nav-item"><a class="nav-link" href="{{ '/en/' ~ app.request.requestUri|trim('/') }}">EN</a></li>
+                        {% endif %}
+                    {% elseif app.session.get('_locale') in app.request.requestUri %}
+                        {% if app.session.get('_locale') == 'en' %}
+                            <li class="nav-item"><a class="nav-link" href="{{ '/fr/' ~ app.request.requestUri[3:]|trim('/') }}">FR</a></li>
+                        {% elseif app.session.get('_locale') == 'fr' %}
+                            <li class="nav-item"><a class="nav-link" href="{{ '/en/' ~ app.request.requestUri[3:]|trim('/') }}">EN</a></li>
+                        {% endif %}
+                    {% endif %}
+
+                    {% if app.request.hasPreviousSession %}
+                        {% for type, messages in app.session.flashBag.all %}
+                            {% for message in messages %}
+                                <li class="nav-item {{ type }}">
+                                    <p class="navbar-text">{{ message|trans({}, 'FOSUserBundle') }}</p>
+                                </li>
+                            {% endfor %}
+                        {% endfor %}
+                    {% endif %}
+                </div>
                 {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-                    <p class="navbar-text">{{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} |</p> 
-                    <li class="nav-item"><a class="nav-link" href="{{ path('fos_user_security_logout') }}">{{ 'layout.logout'|trans({}, 'FOSUserBundle') }}</a></li>
+                    <li class="nav-item logout-item">
+                        <p class="navbar-text">{{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} |</p> 
+                        <a class="nav-link" href="{{ path('fos_user_security_logout') }}">
+                            {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
+                        </a>
+                    </li>
                 {% else %}
-                    {% if app.request.requestUri == '/' or  app.request.requestUri == '/register/' %}
+                    {% if app.request.requestUri in ['/register', '/register/', '/fr/register', '/en/register'] %}
                         <li class="nav-item"><a class="nav-link" href="{{ path('fos_user_security_login') }}">{{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a></li>
-                    {% elseif app.request.requestUri == '/login' %}
+                    {% elseif app.request.requestUri in ['/login', '/login/', '/fr/login', '/en/login'] %}
                         <li class="nav-item"><a class="nav-link" href="{{ path('fos_user_registration_register') }}">{{ 'layout.register'|trans({}, 'FOSUserBundle') }}</a></li>
                     {% endif %}
                 {% endif %}
             </ul>
-
-            {% if app.request.hasPreviousSession %}
-                {% for type, messages in app.session.flashBag.all %}
-                    {% for message in messages %}
-                        <div class="{{ type }}">
-                            {{ message|trans({}, 'FOSUserBundle') }}
-                        </div>
-                    {% endfor %}
-                {% endfor %}
-            {% endif %}
         </nav>
     </header>
 {% endblock header %}
@@ -53,4 +76,9 @@
         </div>
     </footer>
 {% endblock footer %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('bundles/bzmcore/js/core.js') }}"></script>
+{% endblock javascripts %}
 

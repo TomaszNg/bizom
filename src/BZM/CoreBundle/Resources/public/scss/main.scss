@@ -41,9 +41,17 @@ a:hover {
     cursor: pointer;
 }
 
+.navbar-text {
+    margin: 0;
+}
+
 .btn-secondary {
     background-color: $fourth-color;
     border-color: $fourth-color;
+}
+
+.success {
+    color: green;
 }
 
 #visit_bgd_image {
@@ -54,7 +62,6 @@ a:hover {
     background-repeat: no-repeat;
 }
 
-body.cover,
 body.install,
 body.login,
 body.register,
@@ -71,6 +78,14 @@ body.error-page {
 
             ul {
                 width: 100%;
+
+                div {
+                    display: flex;
+                }
+
+                .logout-item {
+                    display: flex;
+                }
 
                 li {
                     margin-left: auto;
@@ -92,9 +107,8 @@ body.error-page {
             display: block;
             z-index: 1;
             opacity: 0.8;
-            background-image: url('../images/app_logo.svg');
+            background-image: url('../images/app_logo.png');
             background-repeat: no-repeat;
-            background-position-y: -33px;
             background-size: cover;
         }
 
@@ -118,6 +132,9 @@ body.error-page {
         ), webkit moz ms o);
 
         section {
+            max-width: 300px;
+            margin-left: auto;
+            margin-right: auto;
             margin-top: 50px;
 
             h5 {

@@ -27,7 +27,6 @@ class ParametersManager
 
     public function saveParameters($parameters, $data) {
         $this->normalizer->setIgnoredAttributes(array('id'));
-        $data = $this->normalizer->normalize($data);
         $parameters['parameters'] = array_merge($parameters['parameters'], $data);
         $yaml = $this->encoder->encode($parameters, 'yaml', ['yaml_inline' => 2, 'yaml_indent' => 0]);
         

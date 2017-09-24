@@ -1,20 +1,10 @@
-{% extends 'BZMCoreBundle:Core:layout.html.twig' %}
-
-{% block head %}
-{% endblock head %}
+{% extends 'BZMCoreBundle::base.html.twig' %}
 
 {% block widgets %}
 {% endblock widgets %}
 
 {% block header %}
-    {% block headernav %}
-        {{ parent() }}
-    {% endblock headernav %}
-
-    {% block banner %}
-    {% endblock banner %}
 {% endblock header %}
 
 {% block footer %}
-    {{ parent() }}
 {% endblock footer %}

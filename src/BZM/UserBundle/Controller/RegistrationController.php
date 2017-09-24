@@ -15,10 +15,18 @@
  use FOS\UserBundle\Event\GetResponseUserEvent;
  use FOS\UserBundle\Event\FilterUserResponseEvent;
  use FOS\UserBundle\Event\FormEvent;
+ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
  use FOS\UserBundle\Controller\RegistrationController as BaseController;
+ use BZM\UserBundle\Entity\User;
 
  class RegistrationController extends BaseController
  {
+    /**
+     * Register user
+     *
+     * @Route("/register")
+     * @Route("/{_locale}/register", requirements={"_locale" = "fr|en"})
+     */
     public function registerAction(Request $request) {
         $authChecker = $this->get('security.authorization_checker');
 
@@ -41,7 +49,7 @@
             if (null !== $event->getResponse()) {
                 return $event->getResponse();
             }
-
+            
             $form = $formFactory->createForm();
             $form->setData($user);
 
@@ -50,10 +58,15 @@
             if ($form->isSubmitted()) {
                 if ($form->isValid()) {
                     $event = new FormEvent($form, $request);
+                    $countUsers = $this->getDoctrine()->getRepository(User::class)->findAll();
+
+                    if ($countUsers == null) {
+                        $user->setSuperAdmin(true);
+                    }
+
                     $dispatcher->dispatch(FOSUserEvents::REGISTRATION_SUCCESS, $event);
-
                     $userManager->updateUser($user);
-
+                    
                     if (null === $response = $event->getResponse()) {
                         $url = $this->generateUrl('fos_user_registration_confirmed');
                         $response = new RedirectResponse($url);

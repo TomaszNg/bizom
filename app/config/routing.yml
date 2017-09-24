@@ -8,11 +8,11 @@ bzm_admin:
     type:     annotation
     prefix:   /
 
-user:
+bzm_user:
     resource: "@BZMUserBundle/Controller"
     type:     annotation
 
-core:
+bzm_core:
     resource: "@BZMCoreBundle/Controller"
     type:     annotation
 

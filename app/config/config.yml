@@ -10,7 +10,7 @@ imports:
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
-    locale: fr
+    locale: en|fr
     app_name: bizom
 
 framework:
@@ -30,7 +30,7 @@ framework:
     #serializer: { enable_annotations: true }
     templating:
         engines: ['twig']
-    default_locale: '%locale%'
+    default_locale: en
     trusted_hosts: ~
     session:
         # https://symfony.com/doc/current/reference/configuration/framework.html#handler-id
@@ -48,6 +48,7 @@ twig:
     strict_variables: '%kernel.debug%'
     globals:
         app_name: '%app_name%'
+        locale: '%locale%'
 
 # Doctrine Configuration
 doctrine:

@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 
-<html lang="fr">
+<html lang="{{ app.session.get('_locale') }}">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
         {% block head %}
             <title>{{ app_name|capitalize }}</title>
-            <link rel="icon" type="image/svg" href="../bundles/bzmcore/images/app_logo.svg" />
+            <link rel="icon" href="{{ asset('bundles/bzmcore/images/app_logo.png') }}" />
         {% endblock head %}
 
         {% block stylesheets %}
@@ -20,7 +20,9 @@
         {% endblock stylesheets %}
     </head>
 
-    {% if page is not defined %}
+    {% if app.session.get('_locale') in app.request.requestUri %}
+        {% set page = app.request.requestUri[4:] %}
+    {% else %}
         {% set page = app.request.requestUri|trim('/') %}
     {% endif %}
 
