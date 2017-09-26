@@ -7,8 +7,8 @@
         "psr-4": {
             "BZM\\CoreBundle\\": "src/BZM/CoreBundle",
             "BZM\\UserBundle\\": "src/BZM/UserBundle",
-            "BZM\\AdminBundle\\": "src/BZM/AdminBundle",
-            "BZM\\WebsiteBundle\\": "src/BZM/WebsiteBundle"
+            "BZM\\WebsiteBundle\\": "src/BZM/WebsiteBundle",
+            "BZM\\Application\\Sonata\\UserBundle\\": "src/BZM/Application/Sonata/UserBundle"
         },
         "classmap": [ "app/AppKernel.php", "app/AppCache.php" ]
     },
@@ -26,6 +26,8 @@
         "patchwork/jsqueeze": "^2.0",
         "sensio/distribution-bundle": "^5.0.19",
         "sensio/framework-extra-bundle": "^3.0.2",
+        "sonata-project/admin-bundle": "^3.23",
+        "sonata-project/doctrine-orm-admin-bundle": "^3.1",
         "symfony/assetic-bundle": "^2.8",
         "symfony/monolog-bundle": "^3.1.0",
         "symfony/polyfill-apcu": "^1.0",
@@ -55,7 +57,7 @@
     },
     "config": {
         "platform": {
-            "php": "5.5.9"
+            "php": "7.1.9"
         },
         "sort-packages": true
     },

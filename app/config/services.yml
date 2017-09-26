@@ -41,3 +41,15 @@ services:
         arguments: ['@router']
         tags:
             - { name: kernel.event_subscriber }
+    
+    bzm_user.admin.user:
+        class: BZM\UserBundle\Admin\UserAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: 'Settings', label: 'User' }
+        arguments:
+            - ~
+            - BZM\UserBundle\Entity\User
+            - ~
+        calls:
+            - [ setTranslationDomain, [FOSUserBundle]]
+        public: true

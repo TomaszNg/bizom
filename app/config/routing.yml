@@ -3,11 +3,6 @@ bzm_website:
     type:     annotation
     prefix:   /
 
-bzm_admin:
-    resource: "@BZMAdminBundle/Controller/"
-    type:     annotation
-    prefix:   /
-
 bzm_user:
     resource: "@BZMUserBundle/Controller"
     type:     annotation
@@ -16,5 +11,18 @@ bzm_core:
     resource: "@BZMCoreBundle/Controller"
     type:     annotation
 
-fos_user:
-    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+fos_user_register:
+    resource: "@FOSUserBundle/Resources/config/routing/registration.xml"
+    prefix: /register
+
+fos_user_security:
+    resource: "@FOSUserBundle/Resources/config/routing/security.xml"
+
+admin:
+    resource: '@SonataAdminBundle/Resources/config/routing/sonata_admin.xml'
+    prefix: /admin
+
+_sonata_admin:
+    resource: .
+    type: sonata_admin
+    prefix: /admin

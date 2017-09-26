@@ -2,15 +2,18 @@ security:
     encoders:
         FOS\UserBundle\Model\UserInterface: bcrypt
 
+    acl:
+        connection: default
+
     role_hierarchy:
-        ROLE_ADMIN:       ROLE_USER
-        ROLE_SUPER_ADMIN: ROLE_ADMIN
+        ROLE_ADMIN:       [ROLE_USER, ROLE_SONATA_ADMIN]
+        ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
 
     providers:
         fos_userbundle:
             id: fos_user.user_provider.username
 
-    firewalls:
+    firewalls:            
         main:
             pattern: ^/
             form_login:
@@ -34,4 +37,3 @@ security:
         - { path: ^/website, role: ROLE_USER }
         - { path: ^/admin, role: ROLE_USER }
         - { path: ^/install, role: ROLE_USER }
-        - { path: ^/admin/config, role: ROLE_ADMIN }
