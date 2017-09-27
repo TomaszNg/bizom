@@ -5,3 +5,22 @@ login:
 # Registration messages
 registration:
     title: Créer un nouveau compte
+
+form:
+    username: Nom d'utilisateur
+    email: Adresse e-mail
+    password: Mot de passe
+    roles: Rôles
+    enabled: Activé
+    lastlogin: Dernière connexion
+
+ROLE_USER: Utilisateur
+ROLE_ADMIN: Administrateur
+
+settings: Configurations
+users: Utilisateurs
+
+breadcrumb:
+    link_user_list: Liste d'utilisateurs
+    link_user_create: Créer un utilisateur
+    link_user_delete: Supprimer un utilisateur

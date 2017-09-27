@@ -45,11 +45,11 @@ services:
     bzm_user.admin.user:
         class: BZM\UserBundle\Admin\UserAdmin
         tags:
-            - { name: sonata.admin, manager_type: orm, group: 'Settings', label: 'User' }
+            - { name: sonata.admin, manager_type: orm, group: 'settings', label: 'users', label_catalogue: 'BZMUserBundle', label_translator_strategy: 'sonata.admin.label.strategy.underscore' }
         arguments:
             - ~
             - BZM\UserBundle\Entity\User
             - ~
         calls:
-            - [ setTranslationDomain, [FOSUserBundle]]
+            - [ setTranslationDomain, [BZMUserBundle]]
         public: true

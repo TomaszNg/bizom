@@ -61,7 +61,7 @@
                     $countUsers = $this->getDoctrine()->getRepository(User::class)->findAll();
 
                     if ($countUsers == null) {
-                        $user->setSuperAdmin(true);
+                        $user->addRole('ROLE_ADMIN');
                     }
 
                     $dispatcher->dispatch(FOSUserEvents::REGISTRATION_SUCCESS, $event);

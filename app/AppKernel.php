@@ -18,14 +18,14 @@ class AppKernel extends Kernel
             new Symfony\Bundle\AsseticBundle\AsseticBundle(),
             new Sonata\EasyExtendsBundle\SonataEasyExtendsBundle(),
             new FOS\UserBundle\FOSUserBundle(),
+            new BZM\CoreBundle\BZMCoreBundle(),
+            new BZM\UserBundle\BZMUserBundle(),
+            new BZM\WebsiteBundle\BZMWebsiteBundle(),
             new Sonata\CoreBundle\SonataCoreBundle(),
             new Sonata\BlockBundle\SonataBlockBundle(),
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
             new Sonata\DoctrineORMAdminBundle\SonataDoctrineORMAdminBundle(),            
             new Sonata\AdminBundle\SonataAdminBundle(),
-            new BZM\CoreBundle\BZMCoreBundle(),
-            new BZM\UserBundle\BZMUserBundle(),
-            new BZM\WebsiteBundle\BZMWebsiteBundle()
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {
