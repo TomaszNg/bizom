@@ -62,6 +62,7 @@ a:hover {
     background-repeat: no-repeat;
 }
 
+body.cover,
 body.install,
 body.login,
 body.register,
@@ -157,8 +158,13 @@ body.error-page {
 
             form {
                 div {
+                    input[type=checkbox] {
+                        vertical-align: sub;
+                    }
+
                     label {
                         @include no-select();
+                        display: inline;
                     }
     
                     textarea {

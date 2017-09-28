@@ -4,7 +4,8 @@ login:
 
 # Registration messages
 registration:
-    title: Créer un nouveau compte
+    title: Créer un compte administrateur
+    submit: Créer
 
 form:
     username: Nom d'utilisateur

@@ -7,8 +7,7 @@
         "psr-4": {
             "BZM\\CoreBundle\\": "src/BZM/CoreBundle",
             "BZM\\UserBundle\\": "src/BZM/UserBundle",
-            "BZM\\WebsiteBundle\\": "src/BZM/WebsiteBundle",
-            "BZM\\Application\\Sonata\\UserBundle\\": "src/BZM/Application/Sonata/UserBundle"
+            "BZM\\WebsiteBundle\\": "src/BZM/WebsiteBundle"
         },
         "classmap": [ "app/AppKernel.php", "app/AppCache.php" ]
     },

@@ -19,18 +19,8 @@
             {% endstylesheets %}
         {% endblock stylesheets %}
     </head>
-
-    {% if app.session.get('_locale') in app.request.requestUri %}
-        {% set page = app.request.requestUri[4:] %}
-    {% else %}
-        {% set page = app.request.requestUri|trim('/') %}
-    {% endif %}
-
-    {% if status_code is defined %}
-        {% set page = "error-page" %}
-    {% endif %}
     
-    <body class="{{ page }} container-fluid">
+    <body class="{{ app.request.get('page') }} container-fluid">
         {% block widgets %}
         {% endblock widgets %}
         

@@ -28,10 +28,11 @@
      * @Route("/{_locale}/register", requirements={"_locale" = "fr|en"})
      */
     public function registerAction(Request $request) {
-        $authChecker = $this->get('security.authorization_checker');
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_ANONYMOUSLY');
+        $countAdmin = $this->getDoctrine()->getRepository(User::class)->findByRole('ROLE_ADMIN');
 
-        if ($authChecker->isGranted('ROLE_USER') || $authChecker->isGranted('ROLE_ADMIN')) {
-            throw $this->createNotFoundException();
+        if ($countAdmin != null) {
+            return $this->redirectToRoute('bizom_core_homepage');
         } else {
             /** @var $formFactory FactoryInterface */
             $formFactory = $this->get('fos_user.registration.form.factory');
@@ -84,10 +85,10 @@
                     return $response;
                 }
             }
-        }
 
-        return $this->render('@FOSUser/Registration/register.html.twig', array(
-            'form' => $form->createView()
-        ));
-    }
+            return $this->render('@FOSUser/Registration/register.html.twig', array(
+                'form' => $form->createView()
+            ));
+        }
+    }     
 }

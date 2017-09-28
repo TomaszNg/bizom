@@ -19,56 +19,63 @@ use BZM\CoreBundle\Service\ParametersManager;
 class MainController extends Controller
 {
     /**
-     * Redirects to correct home page
+     * Switch home/cover actions
      *
      * @Route("/", name="bizom_core_homepage")
+     * @Route("/{_locale}/", requirements={"_locale" = "fr|en"})
      * @Method("GET")
      */
-    public function homeAction(Request $request, ParametersManager $pm) {
-        $authChecker = $this->get('security.authorization_checker');
-        $parameters  = $pm->decodeParameters();
-        
-        if ($authChecker->isGranted('ROLE_USER') || $authChecker->isGranted('ROLE_ADMIN')) {
-            if (!array_key_exists('project_name', $parameters['parameters'])) {
-                if (!$this->get('session')->get('installation') == 'Done') {
-                    $this->get('session')->set('installation', 'Setting');
-                }
-
-                return $this->redirectToRoute('bizom_core_install');
-            } else {
-                return $this->redirectToRoute('bizom_website_home');
-            }
+    public function homeAction() {
+        if ($this->container->hasParameter('project_name')) {
+            return $this->redirectToRoute('bizom_website_home');
         } else {
-            return $this->redirectToRoute('fos_user_security_login');
+            return $this->redirectToRoute('bizom_core_cover');
         }
     }
 
     /**
-     * Installs project parameters
+     * Renders cover page
+     *
+     * @Route("/cover", name="bizom_core_cover")
+     * @Route("/{_locale}/cover", requirements={"_locale" = "fr|en"})
+     * @Method("GET")
+     */
+     public function coverAction() {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_ANONYMOUSLY');
+
+        if ($this->container->hasParameter('project_name')) {
+            return $this->redirectToRoute('bizom_core_homepage');
+        } else {
+            return $this->render('BZMCoreBundle:Install:cover.html.twig');
+        }
+    }
+
+    /**
+     * GET: Renders Install view
+     * POST: Installs project parameters and redirects to home
      *
      * @Route("/install", name="bizom_core_install")
      * @Route("/{_locale}/install", requirements={"_locale" = "fr|en"})
      * @Method({"GET", "POST"})
      */
     public function installAction(Request $request, ParametersManager $pm) {
-        if ($this->get('session')->get('installation') == 'Setting') {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_ANONYMOUSLY');
+
+        if ($this->container->hasParameter('project_name')) {
+            return $this->redirectToRoute('bizom_core_homepage');
+        } else {
             $form = $this->createForm(ProjectType::class);
             $form->handleRequest($request);
     
             if ($form->isSubmitted() && $form->isValid()) {
-                $parameters = $pm->decodeParameters();
-                $data = $form->getData();
-                $pm->saveParameters($parameters, $data);
-                $this->get('session')->set('installation', 'Done');
-
+                $pm->saveParameters($form->getData());
+                
                 return $this->redirectToRoute('bizom_core_homepage');
             } 
 
-            return $this->render('BZMCoreBundle:Core:install.html.twig', array(
+            return $this->render('BZMCoreBundle:Install:install.html.twig', array(
                 'form' => $form->createView()
             ));
-        } else {
-            throw $this->createNotFoundException();
         }
     }
 }

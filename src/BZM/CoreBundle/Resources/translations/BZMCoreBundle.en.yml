@@ -1,4 +1,10 @@
 # Installation messages
+cover:
+    title: Welcome !
+    installation: Installation
+    text: It's your first installation,
+          Click on the button below to continue.
+
 install:
     title: Setting up project
 

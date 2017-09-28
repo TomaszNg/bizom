@@ -10,22 +10,10 @@
         <nav class="navbar w-100">
             <ul class="nav">
                 <div>
-                    {% if app.session.get('_locale') == null %}
-                        {{ app.session.set('_locale', 'en') }}
-                    {% endif %}
-
-                    {% if app.session.get('_locale') not in app.request.requestUri %}
-                        {% if app.session.get('_locale') == 'en' %}
-                            <li class="nav-item"><a class="nav-link" href="{{ '/fr/' ~ app.request.requestUri|trim('/') }}">FR</a></li>
-                        {% elseif app.session.get('_locale') == 'fr' %}
-                            <li class="nav-item"><a class="nav-link" href="{{ '/en/' ~ app.request.requestUri|trim('/') }}">EN</a></li>
-                        {% endif %}
-                    {% elseif app.session.get('_locale') in app.request.requestUri %}
-                        {% if app.session.get('_locale') == 'en' %}
-                            <li class="nav-item"><a class="nav-link" href="{{ '/fr/' ~ app.request.requestUri[3:]|trim('/') }}">FR</a></li>
-                        {% elseif app.session.get('_locale') == 'fr' %}
-                            <li class="nav-item"><a class="nav-link" href="{{ '/en/' ~ app.request.requestUri[3:]|trim('/') }}">EN</a></li>
-                        {% endif %}
+                    {% if app.session.get('_locale') == 'en' %}
+                        <li class="nav-item"><a class="nav-link" href="{{ '/fr/' ~ app.request.get('page') }}">FR</a></li>
+                    {% elseif app.session.get('_locale') == 'fr' %}
+                        <li class="nav-item"><a class="nav-link" href="{{ '/en/' ~ app.request.get('page') }}">EN</a></li>
                     {% endif %}
 
                     {% if app.request.hasPreviousSession %}
@@ -45,12 +33,6 @@
                             {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
                         </a>
                     </li>
-                {% else %}
-                    {% if app.request.requestUri in ['/register', '/register/', '/fr/register', '/en/register'] %}
-                        <li class="nav-item"><a class="nav-link" href="{{ path('fos_user_security_login') }}">{{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a></li>
-                    {% elseif app.request.requestUri in ['/login', '/login/', '/fr/login', '/en/login'] %}
-                        <li class="nav-item"><a class="nav-link" href="{{ path('fos_user_registration_register') }}">{{ 'layout.register'|trans({}, 'FOSUserBundle') }}</a></li>
-                    {% endif %}
                 {% endif %}
             </ul>
         </nav>

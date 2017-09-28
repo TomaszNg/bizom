@@ -15,6 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity
  * @ORM\Table(name="`user`")
+ * @ORM\Entity(repositoryClass="BZM\UserBundle\Repository\UserRepository")
  */
 class User extends BaseUser
 {

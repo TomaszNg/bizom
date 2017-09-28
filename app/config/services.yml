@@ -21,6 +21,10 @@ services:
         resource: '../../src/BZM/CoreBundle/*'
         exclude: '../../src/BZM/CoreBundle/{Entity,Repository,Tests}'
 
+    BZM\UserBundle\:
+        resource: '../../src/BZM/UserBundle/*'
+        exclude: '../../src/BZM/UserBundle/{Entity,Repository,Tests}'
+
     # controllers are imported separately to make sure they're public
     # and have a tag that allows actions to type-hint services
     # BZM\CoreBundle\Controller\:
@@ -30,18 +34,22 @@ services:
 
     # add more services, or override services that need manual wiring
 
+    # Core parameters manager
     BZM\CoreBundle\Service\ParametersManager:
         arguments: ['%kernel.root_dir%']
-    
+
+    # Core locale subscriber
     BZM\CoreBundle\EventSubscriber\LocaleSubscriber:
         arguments: ['%kernel.default_locale%']
 
+    # User form success listener
     bzm_user.form_success:
         class: BZM\UserBundle\EventListener\FormSuccessListener
         arguments: ['@router']
         tags:
             - { name: kernel.event_subscriber }
     
+    # User admin class (sonata)
     bzm_user.admin.user:
         class: BZM\UserBundle\Admin\UserAdmin
         tags:
@@ -53,3 +61,7 @@ services:
         calls:
             - [ setTranslationDomain, [BZMUserBundle]]
         public: true
+    
+    # Admin security permissions (sonata)
+    security.acl.permission.map:
+        class: Sonata\AdminBundle\Security\Acl\Permission\AdminPermissionMap

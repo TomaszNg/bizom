@@ -1,4 +1,10 @@
 # Installation messages
+cover:
+    title: Bienvenue !
+    installation: Installation
+    text: C'est votre première installation,
+          cliquez sur le bouton ci-dessous pour continuer.
+
 install:
     title: Paramétrage du projet
 

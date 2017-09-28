@@ -41,7 +41,7 @@
  
      public function onFormSuccess(FormEvent $event)
      {
-        $url = $this->router->generate('bizom_core_homepage');
+        $url = $this->router->generate('sonata_admin_dashboard');
         
         $event->setResponse(new RedirectResponse($url));
      }

@@ -1,0 +1,17 @@
+{% extends 'BZMCoreBundle::layout.html.twig' %}
+
+{% block content %}
+    {% trans_default_domain 'BZMCoreBundle' %}
+
+    <main>
+        {% block banner %}
+            {{ parent() }}
+        {% endblock banner %}
+
+        <section class="text-center">
+            <h4>{{ 'cover.title'|trans }}</h4>
+            <p>{{ 'cover.text'|trans }}</p>
+            <a class="btn btn-secondary" href="{{ path('bizom_core_install') }}">{{ 'cover.installation'|trans }}</a>
+        </section>
+    </main>
+{% endblock content %}

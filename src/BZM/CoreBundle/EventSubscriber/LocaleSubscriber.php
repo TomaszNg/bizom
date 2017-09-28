@@ -12,6 +12,8 @@ namespace BZM\CoreBundle\EventSubscriber;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
+use Symfony\Component\HttpFoundation\Response;
 
 class LocaleSubscriber implements EventSubscriberInterface
 {
@@ -23,23 +25,43 @@ class LocaleSubscriber implements EventSubscriberInterface
 
     public function onKernelRequest(GetResponseEvent $event) {
         $request = $event->getRequest();
+        $session = $request->getSession();
+        $page    = $request->getPathInfo();
+
         if (!$request->hasPreviousSession()) {
             return;
         }
 
         // try to see if the locale has been set as a _locale routing parameter
         if ($locale = $request->attributes->get('_locale')) {
-            $request->getSession()->set('_locale', $locale);
+            $session->set('_locale', $locale);
+            $this->setPageNameToRequest($request, substr($page, 4));
         } else {
+            if ($session->get('_locale') == null) { // case logout
+                $session->set('_locale', $this->defaultLocale);
+            }
             // if no explicit locale has been set on this request, use one from the session
-            $request->setLocale($request->getSession()->get('_locale', $this->defaultLocale));
+            $request->setLocale($session->get('_locale', $this->defaultLocale));
+            $this->setPageNameToRequest($request, trim($page, '/'));
+        }
+        
+        // set page name on exception
+        if ($request->attributes->get('exception')) {
+            $request->request->set('page', 'error-page');
+        }
+    }
+
+    public function setPageNameToRequest($request, $page) {
+        $request->request->set('page', $page);
+
+        if ($request->request->get('page') == '') {
+            $request->request->set('page', 'cover');
         }
     }
 
     public static function getSubscribedEvents() {
         return array(
-            // must be registered after the default Locale listener
-            KernelEvents::REQUEST => array(array('onKernelRequest', 15)),
+            KernelEvents::REQUEST => array(array('onKernelRequest', 15))
         );
     }
 }

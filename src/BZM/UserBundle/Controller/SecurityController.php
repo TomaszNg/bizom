@@ -7,29 +7,30 @@
  * @copyright 2017
  */
 
- namespace BZM\UserBundle\Controller;
+namespace BZM\UserBundle\Controller;
 
- use Symfony\Component\Security\Core\Exception\AuthenticationException;
- use Symfony\Component\HttpFoundation\Request;
- use Symfony\Component\Security\Core\Security;
- use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
- use FOS\UserBundle\Controller\SecurityController as BaseController;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use BZM\UserBundle\Entity\User;
+use FOS\UserBundle\Controller\SecurityController as BaseController;
 
- class SecurityController extends BaseController
- {
-     /**
-      * Log in user
-      *
-      * @Route("/login")
-      * @Route("/{_locale}/login", requirements={"_locale" = "fr|en"})
-      */
+class SecurityController extends BaseController
+{
+    /**
+    * Log in user
+    *
+    * @Route("/login")
+    * @Route("/{_locale}/login", requirements={"_locale" = "fr|en"})
+    */
     public function loginAction(Request $request) {
-        $authChecker = $this->get('security.authorization_checker');
-
-        if ($authChecker->isGranted('ROLE_USER') || $authChecker->isGranted('ROLE_ADMIN')) {
-            throw $this->createNotFoundException();
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_ANONYMOUSLY');
+        $countAdmin = $this->getDoctrine()->getRepository(User::class)->findByRole('ROLE_ADMIN');
+        
+        if ($countAdmin == null) {
+            return $this->redirectToRoute('bizom_core_homepage');
         } else {
-            /** @var $session \Symfony\Component\HttpFoundation\Session\Session */
             $session = $request->getSession();
             $authErrorKey    = Security::AUTHENTICATION_ERROR;
             $lastUsernameKey = Security::LAST_USERNAME;
