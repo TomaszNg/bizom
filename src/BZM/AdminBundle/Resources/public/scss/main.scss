@@ -1,0 +1,28 @@
+/**
+ * Main CSS file
+ *
+ * Author: Tomasz Ngondo <tomasz.ngondo@outlook.fr>
+ * Copyright 2017
+ */
+
+ @import '../../bzmcore/scss/mixins.scss';
+
+html {
+    body {
+        div.wrapper {
+            header.main-header {
+                nav {
+                    div:nth-child(3) {
+                        ul {
+                            li:nth-child(2) {
+                                ul {
+                                    width: auto;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
