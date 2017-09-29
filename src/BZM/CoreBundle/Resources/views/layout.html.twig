@@ -28,7 +28,7 @@
                 </div>
                 {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
                     <li class="nav-item logout-item">
-                        <p class="navbar-text">{{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'SonataUserBundle') }} |</p> 
+                        <p class="navbar-text">{{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} |</p> 
                         <a class="nav-link" href="{{ path('fos_user_security_logout') }}">
                             {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
                         </a>
@@ -42,7 +42,7 @@
 {% block content %}
     {% block banner %}
         <figure>
-            <a href="{{ path('bizom_core_homepage') }}" class="app-logo mx-auto"></a>
+            <a href="{{ path('bzm_core_homepage') }}" class="app-logo mx-auto"></a>
             <div>
                 <h1>{{ app_name |replace({'i': '!'}) |capitalize }}</h1>
             </div>

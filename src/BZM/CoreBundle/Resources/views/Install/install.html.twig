@@ -10,7 +10,7 @@
 
         <section>
             <h5 class="text-center">{{ 'install.title'|trans }}</h5>
-            {{ form_start(form, {'method': 'post', 'action': path('bizom_core_install')}) }}
+            {{ form_start(form, {'method': 'post', 'action': path('bzm_core_install')}) }}
                 <div class="form-group">
                     {{ form_label(form.project_name) }}
                     {{ form_widget(form.project_name, {'attr': {'class': 'form-control'}}) }}

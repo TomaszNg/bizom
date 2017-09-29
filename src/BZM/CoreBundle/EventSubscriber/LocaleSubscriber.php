@@ -12,8 +12,6 @@ namespace BZM\CoreBundle\EventSubscriber;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
-use Symfony\Component\HttpFoundation\Response;
 
 class LocaleSubscriber implements EventSubscriberInterface
 {
@@ -27,7 +25,7 @@ class LocaleSubscriber implements EventSubscriberInterface
         $request = $event->getRequest();
         $session = $request->getSession();
         $page    = $request->getPathInfo();
-
+        
         if (!$request->hasPreviousSession()) {
             return;
         }

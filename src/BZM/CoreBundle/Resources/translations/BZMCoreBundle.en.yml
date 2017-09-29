@@ -14,3 +14,12 @@ form:
     company_adress: Company adress
     btn:
         install: Install
+
+error:
+    title: Oops! An error ocurred
+    content: There is a problem, the page cannot be displayed.
+             Please excuse us for the gene.
+
+error404:
+    title: Page not found
+    content: The page you requested does not exist.

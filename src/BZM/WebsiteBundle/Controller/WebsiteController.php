@@ -9,10 +9,14 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 class WebsiteController extends Controller
 {
     /**
-     * @Route("/website", name="bizom_website_home")
+     * @Route("/website", name="bzm_website_home")
      */
     public function homeAction()
     {
-        return $this->render('BZMWebsiteBundle:Website:home.html.twig');
+        if (!$this->container->hasParameter('project_name')) {
+            return $this->redirectToRoute('bzm_core_cover');
+        } else {
+            return $this->render('BZMWebsiteBundle:Website:home.html.twig');
+        }
     }
 }

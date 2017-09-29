@@ -14,3 +14,12 @@ form:
     company_adress: Adresse de la société
     btn:
         install: Installer
+
+error:
+    title: Oups! Une erreur est survenue
+    content: Il y a un problème, La page ne peut pas etre affichée.
+             Excusez nous pour la gène occasionée.
+
+error404:
+    title: Page non trouvée
+    content: La page que vous avez demandé n'existe pas.

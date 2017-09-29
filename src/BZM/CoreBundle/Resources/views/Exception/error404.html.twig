@@ -1,5 +1,8 @@
 {% extends 'BZMCoreBundle::layout.html.twig' %}
 
+{% block header %}
+{% endblock header %}
+
 {% block content %}
     {% trans_default_domain 'BZMCoreBundle' %}
 
@@ -9,9 +12,11 @@
         {% endblock banner %}
 
         <section class="text-center">
-            <h4>{{ 'cover.title'|trans }}</h4>
-            <p>{{ 'cover.text'|trans }}</p>
-            <a class="btn btn-secondary" href="{{ path('bzm_core_install') }}">{{ 'cover.installation'|trans }}</a>
+            <h4>{{ 'error404.title'|trans }}</h4>
+            <p>{{ 'error404.content'|trans }}</p>
         </section>
     </main>
 {% endblock content %}
+
+{% block footer %}
+{% endblock footer %}

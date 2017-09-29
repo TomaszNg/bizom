@@ -43,8 +43,7 @@ services:
         arguments: ['%kernel.default_locale%']
 
     # User form success listener
-    bzm_user.form_success:
-        class: BZM\UserBundle\EventListener\FormSuccessListener
+    BZM\UserBundle\EventListener\FormSuccessListener:
         arguments: ['@router']
         tags:
             - { name: kernel.event_subscriber }

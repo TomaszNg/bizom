@@ -11,8 +11,9 @@ namespace BZM\UserBundle\Controller;
 
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Security\Core\Security as CoreSecurity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use BZM\UserBundle\Entity\User;
 use FOS\UserBundle\Controller\SecurityController as BaseController;
 
@@ -23,17 +24,19 @@ class SecurityController extends BaseController
     *
     * @Route("/login")
     * @Route("/{_locale}/login", requirements={"_locale" = "fr|en"})
+    * @Security("is_granted('IS_AUTHENTICATED_ANONYMOUSLY')")
     */
     public function loginAction(Request $request) {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_ANONYMOUSLY');
         $countAdmin = $this->getDoctrine()->getRepository(User::class)->findByRole('ROLE_ADMIN');
         
-        if ($countAdmin == null) {
-            return $this->redirectToRoute('bizom_core_homepage');
+        if (!$this->container->hasParameter('project_name')) {
+            return $this->redirectToRoute('bzm_core_cover');
+        } if ($countAdmin == null) {
+            return $this->redirectToRoute('fos_user_registration_register');
         } else {
             $session = $request->getSession();
-            $authErrorKey    = Security::AUTHENTICATION_ERROR;
-            $lastUsernameKey = Security::LAST_USERNAME;
+            $authErrorKey    = CoreSecurity::AUTHENTICATION_ERROR;
+            $lastUsernameKey = CoreSecurity::LAST_USERNAME;
 
             // get the error if any (works with forward and redirect -- see below)
             if ($request->attributes->has($authErrorKey)) {
