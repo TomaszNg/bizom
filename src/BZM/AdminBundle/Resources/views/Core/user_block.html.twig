@@ -1,4 +1,0 @@
-{% block user_block %}
-    <li><a href="/admin/user/{{app.user.id}}/show">{{ app.user.username }}</a></li>
-    <li><a href="{{ path('fos_user_security_logout') }}">{{ 'layout.logout'|trans({}, 'FOSUserBundle') }}</a></li>
-{% endblock %}

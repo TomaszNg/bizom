@@ -1,5 +1,5 @@
-bzm_website:
-    resource: "@BZMWebsiteBundle/Controller/"
+bzm_page:
+    resource: "@BZMPageBundle/Controller/"
     type:     annotation
 
 bzm_user:
@@ -19,9 +19,29 @@ _sonata_admin:
     type: sonata_admin
     prefix: /admin
 
-fos_user_register:
-    resource: "@FOSUserBundle/Resources/config/routing/registration.xml"
-    prefix: /register
+sonata_user_admin_security:
+    resource: '@SonataUserBundle/Resources/config/routing/admin_security.xml'
+    prefix: /admin
+
+sonata_user_admin_resetting:
+    resource: '@SonataUserBundle/Resources/config/routing/admin_resetting.xml'
+    prefix: /admin/resetting
+
+sonata_page_exceptions:
+    resource: '@SonataPageBundle/Resources/config/routing/exceptions.xml'
+    prefix: /
+
+sonata_page_cache:
+    resource: '@SonataPageBundle/Resources/config/routing/cache.xml'
+    prefix: /
 
 fos_user_security:
     resource: "@FOSUserBundle/Resources/config/routing/security.xml"
+
+# fos_user_register:
+#     resource: "@FOSUserBundle/Resources/config/routing/registration.xml"
+#     prefix: /register
+
+# fos_user_group:
+#     resource: "@FOSUserBundle/Resources/config/routing/group.xml"
+#     prefix: /group

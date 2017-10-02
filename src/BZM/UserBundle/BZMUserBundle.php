@@ -13,7 +13,4 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class BZMUserBundle extends Bundle
 {
-    public function getParent() {
-        return 'FOSUserBundle';
-    }
 }

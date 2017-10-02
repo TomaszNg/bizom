@@ -53,7 +53,7 @@ class LocaleSubscriber implements EventSubscriberInterface
         $request->request->set('page', $page);
 
         if ($request->request->get('page') == '') {
-            $request->request->set('page', 'cover');
+            $request->request->set('page', 'home-page');
         }
     }
 

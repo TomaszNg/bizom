@@ -2,9 +2,9 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: services.yml }
+    # - { resource: "@BZMPageBundle/Resources/config/services.yml" }
     # - { resource: "@BZMCoreBundle/Resources/config/services.yml" }
     # - { resource: "@BZMUserBundle/Resources/config/services.yml" }
-    # - { resource: "@BZMWebsiteBundle/Resources/config/services.yml" }
 
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
@@ -45,6 +45,8 @@ framework:
 twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
+    form_themes:
+        - 'SonataCoreBundle:Form:datepicker.html.twig'
     globals:
         app_name: '%app_name%'
         locale: '%locale%'
@@ -59,8 +61,8 @@ doctrine:
         user: '%database_user%'
         password: '%database_password%'
         charset: UTF8
-        # types:
-        #     json: Sonata\Doctrine\Types\JsonType
+        types:
+            json: Sonata\Doctrine\Types\JsonType
         # if using pdo_sqlite as your database driver:
         #   1. add the path in parameters.yml
         #     e.g. database_path: '%kernel.project_dir%/var/data/data.sqlite'
@@ -98,6 +100,11 @@ fos_user:
     from_email:
         address: "%mailer_user%"
         sender_name: "%mailer_user%"
+    service:
+        user_manager: sonata.user.orm.user_manager
+    group:
+        group_class:   BZM\UserBundle\Entity\Group
+        group_manager: sonata.user.orm.group_manager 
 
 sonata_block:
     default_contexts: [cms]
@@ -105,10 +112,149 @@ sonata_block:
         # enable the SonataAdminBundle block
         sonata.admin.block.admin_list:
             contexts: [admin]
+        sonata.user.block.menu:    # used to display the menu in profile pages
+        sonata.user.block.account: # used to display menu option (login option)
+        sonata.block.service.text: # used to if you plan to use Sonata user routes
+    context_manager: sonata.page.block.context_manager
 
 sonata_admin:
     title:      '%app_name%'
     title_logo:  bundles/bzmcore/images/app_logo.png
     show_mosaic_button: false
     security:
-        handler: sonata.admin.security.handler.role
+        handler: sonata.admin.security.handler.acl
+        information:
+            GUEST:    [VIEW, LIST]
+            STAFF:    [EDIT, LIST, CREATE]
+            EDITOR:   [OPERATOR, EXPORT]
+            ADMIN:    [MASTER]
+
+            # permissions not related to an object instance and also to be available when objects do not exist
+            # the DELETE admin permission means the user is allowed to batch delete objects
+            admin_permissions: [CREATE, LIST, DELETE, UNDELETE, EXPORT, OPERATOR, MASTER]
+
+            # permission related to the objects
+            object_permissions: [VIEW, EDIT, DELETE, UNDELETE, OPERATOR, MASTER, OWNER]
+
+sonata_user:
+    security_acl: true
+    manager_type: orm 
+    profile:
+        default_avatar: bundles/bzmcore/images/app_logo.png # Default avatar displayed if user doesn't have one
+    class:
+        user: BZM\UserBundle\Entity\User
+        group: BZM\UserBundle\Entity\Group
+    table:
+        user_group: 'user_group'
+
+    # impersonating:
+    #     route: page_slug
+    #     parameters: { path: / }
+
+    admin: # Admin Classes
+        user:
+            class:          BZM\UserBundle\Admin\UserAdmin
+            controller:     SonataAdminBundle:CRUD
+            translation:    SonataUserBundle
+
+        group:
+            class:          BZM\UserBundle\Admin\GroupAdmin
+            controller:     SonataAdminBundle:CRUD
+            translation:    SonataUserBundle
+
+sonata_page:
+    slugify_service:   sonata.core.slugify.cocur # old BC value is sonata.core.slugify.native
+    multisite:        host
+    default_template: 2 columns layout # template key from templates section, used as default for new pages
+    templates:
+        default:  { path: 'SonataPageBundle::layout.html.twig',          name: 'default' }
+        2columns: { path: 'SonataPageBundle::2columns_layout.html.twig', name: '2 columns layout' }
+
+    # Generates a snapshot when a page is saved (from the admin)
+    direct_publication: false 
+    class:
+        site: BZM\PageBundle\Entity\Site
+        page: BZM\PageBundle\Entity\Page
+        snapshot: BZM\PageBundle\Entity\Snapshot
+        block: BZM\PageBundle\Entity\Block
+
+sonata_seo:
+    encoding:         UTF-8
+    page:
+        title:            Sonata Project
+        default:          sonata.seo.page.default
+        metas:
+            name:
+                keywords:             foo bar
+                description:          The description
+                robots:               index, follow
+
+            property:
+                # Facebook application settings
+                #'fb:app_id':          XXXXXX
+                #'fb:admins':          admin1, admin2
+
+                # Open Graph information
+                # see http://developers.facebook.com/docs/opengraphprotocol/#types or http://ogp.me/
+                'og:site_name':       Sonata Project Sandbox
+                'og:description':     A demo of the some rich bundles for your Symfony2 projects
+
+            http-equiv:
+                'Content-Type':         text/html; charset=utf-8
+                #'X-Ua-Compatible':      IE=EmulateIE7
+
+            charset:
+                UTF-8:    ''
+
+        head:
+            'xmlns':              http://www.w3.org/1999/xhtml
+            'xmlns:og':           http://opengraphprotocol.org/schema/
+            #'xmlns:fb':           "http://www.facebook.com/2008/fbml"
+
+sonata_cache:
+    caches:
+        esi:
+            token: an unique security key # a random one is generated by default
+            servers:
+                - varnishadm -T 127.0.0.1:2000 {{ COMMAND }} "{{ EXPRESSION }}"
+
+        ssi:
+            token: an unique security key # a random one is generated by default
+
+        # mongo:
+        #     database:   cache
+        #     collection: cache
+        #     servers:
+        #         - {host: 127.0.0.1, port: 27017, user: username, password: pASS'}
+        #         - {host: 127.0.0.2}
+
+        # memcached:
+        #     prefix: test     # prefix to ensure there is no clash between instances
+        #     servers:
+        #         - {host: 127.0.0.1, port: 11211, weight: 0}
+
+        # predis:
+        #     servers:
+        #         - {host: 127.0.0.1, port: 6379, database: 42}
+
+        # apc:
+        #     token:  s3cur3   # token used to clear the related cache
+        #     prefix: test     # prefix to ensure there is no clash between instances
+        #     servers:
+        #         - { domain: kooqit.local, ip: 127.0.0.1, port: 80, basic: 'user:login' }
+        #     timeout:
+        #         RCV: { sec: 5, usec: 0 }
+        #         SND: { sec: 5, usec: 0 }
+
+        symfony:
+            token: s3cur3 # token used to clear the related cache
+            php_cache_enabled: true # Optional (default: false), clear APC or PHP OPcache
+            types: [mytype1, mycustomtype2] # Optional, you can restrict allowed cache types
+            servers:
+                - { domain: kooqit.local, ip: 127.0.0.1, port: 80 }
+            timeout:
+                RCV: { sec: 2, usec: 0 }
+                SND: { sec: 2, usec: 0 }
+
+sonata_notification:
+    backend: sonata.notification.backend.runtime

@@ -15,8 +15,9 @@ form:
     enabled: Enabled
     lastlogin: Last login
 
-ROLE_USER: User
-ROLE_ADMIN: Admin
+role:
+    user: User
+    admin: Administrator
 
 settings: Settings
 users: Users

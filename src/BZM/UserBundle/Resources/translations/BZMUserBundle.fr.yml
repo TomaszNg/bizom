@@ -15,8 +15,9 @@ form:
     enabled: Activé
     lastlogin: Dernière connexion
 
-ROLE_USER: Utilisateur
-ROLE_ADMIN: Administrateur
+role:
+    user: Utilisateur
+    admin: Administrateur
 
 settings: Configurations
 users: Utilisateurs

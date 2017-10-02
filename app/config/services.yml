@@ -43,24 +43,28 @@ services:
         arguments: ['%kernel.default_locale%']
 
     # User form success listener
-    BZM\UserBundle\EventListener\FormSuccessListener:
-        arguments: ['@router']
-        tags:
-            - { name: kernel.event_subscriber }
+    # BZM\UserBundle\EventListener\FormSuccessListener:
+    #     arguments: ['@router']
+    #     tags:
+    #         - { name: kernel.event_subscriber }
     
     # User admin class (sonata)
-    bzm_user.admin.user:
-        class: BZM\UserBundle\Admin\UserAdmin
-        tags:
-            - { name: sonata.admin, manager_type: orm, group: 'settings', label: 'users', label_catalogue: 'BZMUserBundle', label_translator_strategy: 'sonata.admin.label.strategy.underscore' }
-        arguments:
-            - ~
-            - BZM\UserBundle\Entity\User
-            - ~
-        calls:
-            - [ setTranslationDomain, [BZMUserBundle]]
-        public: true
+    # sonata.user.admin.user:
+    #     class: BZM\UserBundle\Admin\UserAdmin
+    #     tags:
+    #         - { name: sonata.admin, manager_type: orm, group: 'users', label: 'users', label_catalogue: 'BZMUserBundle', label_translator_strategy: 'sonata.admin.label.strategy.underscore' }
+    #     arguments:
+    #         - ~
+    #         - BZM\UserBundle\Entity\User
+    #         - ~
+    #     calls:
+    #         - [ setTranslationDomain, [BZMUserBundle]]
+    #     public: true
     
     # Admin security permissions (sonata)
     security.acl.permission.map:
         class: Sonata\AdminBundle\Security\Acl\Permission\AdminPermissionMap
+    
+    sonata.user.admin.group:
+        abstract: true
+        public: false

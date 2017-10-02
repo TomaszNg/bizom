@@ -22,10 +22,16 @@ class AppKernel extends Kernel
             new Sonata\DoctrineORMAdminBundle\SonataDoctrineORMAdminBundle(),      
             new Sonata\AdminBundle\SonataAdminBundle(),
             new FOS\UserBundle\FOSUserBundle(),
+            new Sonata\UserBundle\SonataUserBundle('FOSUserBundle'),
+            new Sonata\PageBundle\SonataPageBundle(),
+            new Sonata\SeoBundle\SonataSeoBundle(),
+            new Sonata\CacheBundle\SonataCacheBundle(),
+            new Sonata\NotificationBundle\SonataNotificationBundle(),
+            new Sonata\EasyExtendsBundle\SonataEasyExtendsBundle(),
             new BZM\CoreBundle\BZMCoreBundle(),
             new BZM\UserBundle\BZMUserBundle(),
-            new BZM\WebsiteBundle\BZMWebsiteBundle(),
-            new BZM\AdminBundle\BZMAdminBundle()
+            new BZM\AdminBundle\BZMAdminBundle(),
+            new BZM\PageBundle\BZMPageBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

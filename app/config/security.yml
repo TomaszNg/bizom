@@ -6,51 +6,42 @@ security:
         connection: default
 
     role_hierarchy:
-        ROLE_BZM_USER_USER_READER:
-            - ROLE_BZM_USER_ADMIN_USER_LIST
-            - ROLE_BZM_USER_ADMIN_USER_VIEW
-        ROLE_BZM_USER_USER_EDITOR:
-            - ROLE_BZM_USER_ADMIN_USER_CREATE
-            - ROLE_BZM_USER_ADMIN_USER_EDIT
-        ROLE_BZM_USER_USER_ADMIN:
-            - ROLE_BZM_USER_ADMIN_USER_DELETE
-            - ROLE_BZM_USER_ADMIN_USER_EXPORT
-
-        # Roles used (less verbose)
-        ROLE_USER:        [ROLE_BZM_USER_USER_READER]
-        ROLE_ADMIN:       [ROLE_USER, ROLE_BZM_USER_USER_EDITOR, ROLE_BZM_USER_USER_ADMIN]
+        ROLE_ADMIN:       [ROLE_USER, ROLE_SONATA_ADMIN]
+        ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
 
     # set access_strategy to unanimous, else you may have unexpected behaviors
     access_decision_manager:
         strategy: unanimous
+
     providers:
         fos_userbundle:
             id: fos_user.user_provider.username
 
     firewalls:            
+        admin:
+            pattern:            /admin(.*)
+            context:            user
+            form_login:
+                provider:       fos_userbundle
+                csrf_token_generator: security.csrf.token_manager
+                login_path:     sonata_user_admin_security_login
+                check_path:     sonata_user_admin_security_check
+                always_use_default_target_path: true
+                default_target_path: sonata_admin_dashboard
+            logout:
+                path:           sonata_user_admin_security_logout
+                target:         sonata_user_admin_security_login
+            anonymous:          true
+
         main:
             pattern: ^/
-            form_login:
-                provider: fos_userbundle
-                login_path: fos_user_security_login
-                csrf_token_generator: security.csrf.token_manager
-                default_target_path: sonata_admin_dashboard
-                always_use_default_target_path: true
-                # if you are using Symfony < 2.8, use the following config instead:
-                # csrf_provider: form.csrf_provider
-
-            logout:
-                path: fos_user_security_logout
-                target: /
-                
-            logout:       true
             anonymous:    true
 
     access_control:
         - { path: ^/install, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/website, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/admin, role: ROLE_USER }
+        - { path: ^/admin, role: [ROLE_ADMIN, ROLE_SUPER_ADMIN] }
         
         
