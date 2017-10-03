@@ -123,7 +123,7 @@ fos_user:
         group_manager: sonata.user.orm.group_manager 
 
 sonata_block:
-    default_contexts: [cms]
+    default_contexts: [sonata_page_bundle]
     blocks:
         # enable the SonataAdminBundle block
         sonata.admin.block.admin_list:

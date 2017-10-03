@@ -36,6 +36,6 @@ class Page extends BasePage
     }
 
     public $settings = array(
-        'content'   => 'default content'
+        'content'   => 'Main content'
     );
 }
