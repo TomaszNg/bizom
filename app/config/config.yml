@@ -2,6 +2,9 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: services.yml }
+    # - { resource: "@BZMFormatterBundle/Resources/config/services.yml" }
+    # - { resource: "@BZMBlockBundle/Resources/config/services.yml" }
+    # - { resource: "@BZMNotificationBundle/Resources/config/services.yml" }
     # - { resource: "@BZMPageBundle/Resources/config/services.yml" }
     # - { resource: "@BZMCoreBundle/Resources/config/services.yml" }
     # - { resource: "@BZMUserBundle/Resources/config/services.yml" }
@@ -11,6 +14,9 @@ imports:
 parameters:
     locale: en
     app_name: bizom
+    sonata.page.admin.page.class: BZM\PageBundle\Admin\PageAdmin
+    sonata.page.admin.site.class: BZM\PageBundle\Admin\SiteAdmin
+    sonata.page.admin.shared_block.class: BZM\PageBundle\Admin\SharedBlockAdmin
 
 framework:
     #esi: ~
@@ -47,10 +53,11 @@ twig:
     strict_variables: '%kernel.debug%'
     form_themes:
         - 'SonataCoreBundle:Form:datepicker.html.twig'
+        - 'SonataFormatterBundle:Form:formatter.html.twig'
     globals:
         app_name: '%app_name%'
         locale: '%locale%'
-
+    
 # Doctrine Configuration
 doctrine:
     dbal:
@@ -93,6 +100,15 @@ assetic:
             formatter: 'Leafo\ScssPhp\Formatter\Compressed'
         jsqueeze: ~
 
+cmf_routing:
+    chain:
+        routers_by_id:
+            # enable the DynamicRouter with high priority to allow overwriting configured routes with content
+            #cmf_routing.dynamic_router: 200
+            # enable the symfony default router with a lower priority
+            sonata.page.router: 150
+            router.default: 200
+
 fos_user:
     db_driver: orm # other valid values are 'mongodb' and 'couchdb'
     firewall_name: main
@@ -115,6 +131,7 @@ sonata_block:
         sonata.user.block.menu:    # used to display the menu in profile pages
         sonata.user.block.account: # used to display menu option (login option)
         sonata.block.service.text: # used to if you plan to use Sonata user routes
+        sonata.formatter.block.formatter:
     context_manager: sonata.page.block.context_manager
 
 sonata_admin:
@@ -135,7 +152,9 @@ sonata_admin:
 
             # permission related to the objects
             object_permissions: [VIEW, EDIT, DELETE, UNDELETE, OPERATOR, MASTER, OWNER]
-
+    templates:
+        layout:  SonataAdminBundle::layout.html.twig
+        
 sonata_user:
     security_acl: true
     manager_type: orm 
@@ -163,15 +182,70 @@ sonata_user:
             translation:    SonataUserBundle
 
 sonata_page:
-    slugify_service:   sonata.core.slugify.cocur # old BC value is sonata.core.slugify.native
-    multisite:        host
-    default_template: 2 columns layout # template key from templates section, used as default for new pages
-    templates:
-        default:  { path: 'SonataPageBundle::layout.html.twig',          name: 'default' }
-        2columns: { path: 'SonataPageBundle::2columns_layout.html.twig', name: '2 columns layout' }
+    multisite: host
+    use_streamed_response: true # set the value to false in debug mode or if the reverse proxy does not handle streamed response
+    ignore_route_patterns:
+        - ^(.*)admin(.*)   # ignore admin route, ie route containing 'admin'
+        - ^_(.*)          # ignore symfony routes
 
-    # Generates a snapshot when a page is saved (from the admin)
-    direct_publication: false 
+    ignore_routes:
+        - sonata_page_cache_esi
+        - sonata_page_cache_ssi
+        - sonata_page_js_sync_cache
+        - sonata_page_js_async_cache
+        - sonata_cache_esi
+        - sonata_cache_ssi
+        - sonata_cache_js_async
+        - sonata_cache_js_sync
+        - sonata_cache_apc
+
+    ignore_uri_patterns:
+        - ^/admin\/   # ignore admin route, ie route containing 'admin'
+
+    page_defaults:
+        homepage: {decorate: false} # disable decoration for homepage, key - is a page route
+
+    default_template: default # template key from templates section, used as default for pages
+    templates:
+        default:  
+            path: 'SonataPageBundle::layout.html.twig'          
+            name: 'default'
+            containers:
+                header:
+                    name: Header
+                content_top:
+                    name: Top content
+                content:
+                    name: Main content
+                content_bottom:
+                    name: Bottom content
+                footer:
+                    name: Footer
+            matrix:
+                layout: |
+
+                    HHHHHHHH
+                    TTTTTTTT
+                    TTTTTTTT
+                    CCCCCCCC
+                    CCCCCCCC
+                    BBBBBBBB
+                    BBBBBBBB
+                    FFFFFFFF
+
+                mapping:
+                    H: header
+                    T: content_top
+                    C: content
+                    B: content_bottom
+                    F: footer
+
+    # manage the http errors
+    catch_exceptions:
+        not_found: [404]    # render 404 page with "not_found" key (name generated: _page_internal_error_{key})
+        fatal:     [500]    # so you 
+
+    direct_publication: true 
     class:
         site: BZM\PageBundle\Entity\Site
         page: BZM\PageBundle\Entity\Page
@@ -213,10 +287,10 @@ sonata_seo:
 
 sonata_cache:
     caches:
-        esi:
-            token: an unique security key # a random one is generated by default
-            servers:
-                - varnishadm -T 127.0.0.1:2000 {{ COMMAND }} "{{ EXPRESSION }}"
+        # esi:
+        #     token: an unique security key # a random one is generated by default
+        #     servers:
+        #         - varnishadm -T 127.0.0.1:2000 {{ COMMAND }} "{{ EXPRESSION }}"
 
         ssi:
             token: an unique security key # a random one is generated by default
@@ -246,15 +320,63 @@ sonata_cache:
         #         RCV: { sec: 5, usec: 0 }
         #         SND: { sec: 5, usec: 0 }
 
-        symfony:
-            token: s3cur3 # token used to clear the related cache
-            php_cache_enabled: true # Optional (default: false), clear APC or PHP OPcache
-            types: [mytype1, mycustomtype2] # Optional, you can restrict allowed cache types
-            servers:
-                - { domain: kooqit.local, ip: 127.0.0.1, port: 80 }
-            timeout:
-                RCV: { sec: 2, usec: 0 }
-                SND: { sec: 2, usec: 0 }
+        # symfony:
+        #     token: s3cur3 # token used to clear the related cache
+        #     php_cache_enabled: true # Optional (default: false), clear APC or PHP OPcache
+        #     types: [mytype1, mycustomtype2] # Optional, you can restrict allowed cache types
+        #     servers:
+        #         - { domain: kooqit.local, ip: 127.0.0.1, port: 80 }
+        #     timeout:
+        #         RCV: { sec: 2, usec: 0 }
+        #         SND: { sec: 2, usec: 0 }
 
 sonata_notification:
     backend: sonata.notification.backend.runtime
+
+sonata_formatter:
+    default_formatter: text
+    formatters:
+        markdown:
+            service: sonata.formatter.text.markdown
+            extensions:
+                - sonata.formatter.twig.control_flow
+                - sonata.formatter.twig.gist
+        #        - sonata.media.formatter.twig #keep this commented unless you are using media bundle.
+
+
+        text:
+            service: sonata.formatter.text.text
+            extensions:
+                - sonata.formatter.twig.control_flow
+                - sonata.formatter.twig.gist
+        #        - sonata.media.formatter.twig
+
+
+        rawhtml:
+            service: sonata.formatter.text.raw
+            extensions:
+                - sonata.formatter.twig.control_flow
+                - sonata.formatter.twig.gist
+        #        - sonata.media.formatter.twig
+
+
+        richhtml:
+            service: sonata.formatter.text.raw
+            extensions:
+                - sonata.formatter.twig.control_flow
+                - sonata.formatter.twig.gist
+        #        - sonata.media.formatter.twig
+
+
+        twig:
+            service: sonata.formatter.text.twigengine
+            extensions: [] # Twig formatter cannot have extensions
+
+ivory_ck_editor:
+    default_config: default
+    configs:
+        default:
+            # default toolbar plus Format button
+            toolbar:
+            - [Bold, Italic, Underline, -, Cut, Copy, Paste, PasteText, PasteFromWord, -, Undo, Redo, -, NumberedList, BulletedList, -, Outdent, Indent, -, Blockquote, -, Image, Link, Unlink, Table]
+            - [Format, Maximize, Source]

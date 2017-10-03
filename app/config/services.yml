@@ -68,3 +68,7 @@ services:
     sonata.user.admin.group:
         abstract: true
         public: false
+
+    # sonata.page.admin.page.class:
+    #     class: BZM\PageBundle\Admin\PageAdmin
+    #     public: true

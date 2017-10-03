@@ -1,3 +1,8 @@
+bzm_formatter:
+    resource: "@BZMFormatterBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 bzm_page:
     resource: "@BZMPageBundle/Controller/"
     type:     annotation

@@ -34,4 +34,8 @@ class Page extends BasePage
     {
         return $this->id;
     }
+
+    public $settings = array(
+        'content'   => 'default content'
+    );
 }
